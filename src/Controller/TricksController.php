@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\UnicodeString;
 
-class TricksController
+class TricksController extends AbstractController
 {
     #[Route('/')]
     public function homepage(): Response
     {
-        return new Response('Yo');
+        return $this->render('tricks/homepage.html.twig', [
+            'title' => 'Snow Tricks',
+        ]);
     }
     #[Route('/browse/{slug}')]
     public function browse(string $slug = null): Response
