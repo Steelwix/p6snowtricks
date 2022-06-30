@@ -24,6 +24,6 @@ class TricksController extends AbstractController
         } else {
             $trickTitle = 'All tricks';
         }
-        return new Response('Pick a Trick ' . $trickTitle);
+        return new Response('How to do the ' . $trickTitle);
     }
 }
