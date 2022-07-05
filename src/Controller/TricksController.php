@@ -9,14 +9,14 @@ use Symfony\Component\String\UnicodeString;
 
 class TricksController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/', name: 'app_home')]
     public function homepage(): Response
     {
         return $this->render('tricks/homepage.html.twig', [
             'title' => 'Snow Tricks',
         ]);
     }
-    #[Route('/browse/{slug}')]
+    #[Route('/browse/{slug}', name: 'app_browse')]
     public function browse(string $slug = null): Response
     {
         if ($slug) {
