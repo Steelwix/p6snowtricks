@@ -13,7 +13,7 @@ class TricksController extends AbstractController
     public function homepage(): Response
     {
         return $this->render('tricks/homepage.html.twig', [
-            'title' => 'Snow Tricks',
+            'title' => 'Snow Triks',
         ]);
     }
     #[Route('/browse/{slug}')]
