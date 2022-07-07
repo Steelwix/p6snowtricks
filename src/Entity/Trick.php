@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 class Trick
 {
@@ -38,6 +39,9 @@ class Trick
 
     #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Message::class, orphanRemoval: true)]
     private $messages;
+
+    #[ORM\Column(type: 'string', length: 100)]
+    private $slug;
 
     public function __construct()
     {
@@ -154,6 +158,18 @@ class Trick
                 $message->setIdTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
