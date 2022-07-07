@@ -1,5 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>{{title}}</h1>
+	<section class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>{{title}}</h1>
+
+			</div>
+
+			{% for trick in tricks %}
+				<div class="card h-200" style="width: 15rem;">
+					<img class="card-img-top" src="..." alt="Card image cap">
+					<div class="card-body">
+						<h3 class="card-title">{{trick.trickname}}</h3>
+						<p class="card-text">{{trick.description}}</p>
+						<a href=" {{ path('app_trick',{slug: trick.slug}) }}" class=" btn btn-primary">Lire</a>
+					</div>
+				</div>
+
+
+			{% endfor %}
+
+		</div>
+	</section>
 {% endblock %}
