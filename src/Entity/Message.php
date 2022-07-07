@@ -24,6 +24,9 @@ class Message
     #[ORM\JoinColumn(nullable: false)]
     private $idTrick;
 
+    #[ORM\Column(type: 'datetime')]
+    private $date;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Message
     public function setIdTrick(?Trick $idTrick): self
     {
         $this->idTrick = $idTrick;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

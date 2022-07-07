@@ -40,6 +40,9 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Message::class, orphanRemoval: true)]
     private $messages;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private $slug;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -155,6 +158,18 @@ class Trick
                 $message->setIdTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

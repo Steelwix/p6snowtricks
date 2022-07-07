@@ -2,28 +2,29 @@
 
 namespace App\Controller;
 
+use App\Entity\Trick;
+use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\UnicodeString;
+
+
 
 class TricksController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home_')]
     public function homepage(): Response
     {
         return $this->render('tricks/homepage.html.twig', [
             'title' => 'Snow Tricks',
         ]);
     }
-    #[Route('/browse/{slug}', name: 'app_browse')]
-    public function browse(string $slug = null): Response
+    #[Route('/{slug}', name: 'tricks')]
+    public function show(Trick $trick): Response
     {
-        if ($slug) {
-            $trickTitle = new UnicodeString(str_replace('-', ' ', $slug));
-        } else {
-            $trickTitle = 'All tricks';
-        }
-        return new Response('How to do the ' . $trickTitle);
+        dd($trick);
+        return $this->render(
+            'tricks/tricks.html.twig'
+        );
     }
 }
