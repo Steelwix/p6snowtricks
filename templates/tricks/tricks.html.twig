@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>R</h1>
+	<h1>{{ trick.trickname }}</h1>
+	{{ trick.author.username }}
+	<p>{{ trick.description }}</p>
 {% endblock %}
