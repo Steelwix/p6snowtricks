@@ -28,12 +28,13 @@
 			<div class="alert alert-warning alert-dismissible" role="alert">
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 				<div class="alert-message">
-					<strong>Votre compte n'est pas activé</strong>, renvoyer le lien d'activation</div>
+					<strong>Votre compte n'est pas activé</strong>,
+					<a href="{{ path('app_resend') }}">renvoyer le lien d'activation</a>
+				</div>
 			</div>
 		{% endif %}
 		{% include "_partials/_flash.html.twig" %}
 		{% block body %}{% endblock %}
 
-		{% include "_partials/_footer.html.twig" %}
-	</body>
-</html>
+		{% include "_partials/_footer.html.twig" %}</body>
+</html></body></html>
