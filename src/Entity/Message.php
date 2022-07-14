@@ -70,9 +70,9 @@ class Message
 
     public function getDate(): ?\DateTimeInterface
     {
+        $this->date->format('d-m-Y');
         return $this->date;
     }
-
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
