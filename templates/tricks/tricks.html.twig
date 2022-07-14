@@ -1,7 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>{{ trick.trickname }}</h1>
-	{{ trick.author.username }}
-	<p>{{ trick.description }}</p>
-{% endblock %}
+	<article class="containter">
+		<div class="row">
+			<div class="col-12">
+				<h1>{{ trick.trickname }}</h1>
+				<p>Proposé par
+					{{ trick.author.username }}
+				</p>
+				<p></p>
+				<p>{{ trick.description }}</p>
+			</div>
+			<div class="col-12">
+				{{ form_start(comForm)}}
+				{{ form_row(comForm.comment)}}
+				<button type="submit" class="btn btn-primary btn-lg">Publier</button>
+				{{ form_end(comForm)}}</div>
+			<div class="col-12">
+				<h5>Commentaires</h5>
+				{% for message in messages %}
+
+					<p>
+						<small>
+							<strong>{{message.author.username}}</strong>
+							<i>{{message.date|date("d/m/Y H:i")}}</i>
+						</small>
+					</p>
+				</p>
+
+				<p>{{message.content}}</p>
+			{% endfor %}
+		</div>
+	</div>
+</article>{% endblock %}
