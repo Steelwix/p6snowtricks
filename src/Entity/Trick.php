@@ -22,17 +22,13 @@ class Trick
     #[ORM\Column(type: 'string', length: 2000)]
     private $description;
 
-    #[ORM\ManyToOne(targetEntity: TrickGroup::class)]
+    #[ORM\ManyToOne(targetEntity: TrickGroup::class, inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
     private $trickGroup;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
     private $author;
-
-    #[ORM\ManyToOne(targetEntity: TrickGroup::class, inversedBy: 'tricks')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $TrickGroup;
 
     #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Media::class, orphanRemoval: true)]
     private $media;

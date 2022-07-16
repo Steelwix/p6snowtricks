@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un Trick
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>Modifier un trick</h1>
+				{{ form_start(ModifyTrickForm)}}
+				{{ form_row(ModifyTrickForm.trick_name, {'value': trick.trickname})}}
+				{{ form_row(ModifyTrickForm.description, {'value': trick.description})}}
+
+				{{ form_row(ModifyTrickForm.slug, {'value': trick.slug})}}
+				<button type="submit" class="btn btn-primary btn-lg">Modifier</button>
+				{{ form_end(ModifyTrickForm)}}
+			</div>
+		</div>
+	</div>
+{% endblock %}
