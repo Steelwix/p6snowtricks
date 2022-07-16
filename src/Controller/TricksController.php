@@ -4,19 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\Trick;
+use App\Entity\TrickGroup;
 use App\Entity\User;
 use App\Form\CommentaryFormType;
+use App\Form\CreateTrickFormType;
+use App\Form\ModifyTrickFormType;
 use App\Repository\MessageRepository;
+use App\Repository\TrickGroupRepository;
 use App\Repository\UserRepository;
 use App\Repository\TrickRepository;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
+use Symfony\Component\String\UnicodeString;
 
 class TricksController extends AbstractController
 {
@@ -30,7 +35,7 @@ class TricksController extends AbstractController
             )
         ]);
     }
-    #[Route('/{slug}', name: 'app_trick')]
+    #[Route('trick/{slug}', name: 'app_trick')]
     public function show(
         Trick $trick,
         TrickRepository $trickRepository,
@@ -53,7 +58,8 @@ class TricksController extends AbstractController
             $entityManager->persist($newMessage);
             $entityManager->flush();
             $this->addFlash('success', 'Commentaire publié');
-            return $this->redirectToRoute('app_home_');
+            $currentSlug = $request->get('slug');
+            return $this->redirectToRoute('app_trick', ['slug' => $currentSlug]);
         }
 
         return $this->render(
@@ -65,6 +71,56 @@ class TricksController extends AbstractController
             ]
 
 
+        );
+    }
+
+    #[Route('/create', name: 'app_create_trick')]
+    public function createTrick(TrickRepository $trick, Request $request, EntityManagerInterface $entityManager)
+    {
+        $trick = new Trick;
+        $user = $this->getUser();
+        $form = $this->createForm(CreateTrickFormType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()) {
+            $trick->setAuthor($user);
+            $trickName = $form->get('trick_name')->getData();
+            $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
+            $trickSlug = strtolower($trickNameNoSpace);
+            $trick->setSlug($trickSlug);
+            $entityManager->persist($trick);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre nouveau Trick a été publié');
+        }
+
+        return $this->render(
+            'tricks/create_trick.html.twig',
+            [
+                'createTrickForm' => $form->createView(), 'trick' => $trick
+            ]
+        );
+    }
+
+    #[Route('/modify/trick/{slug}', name: 'app_modify_trick')]
+    public function modifyTrick(Trick $trick, Request $request, EntityManagerInterface $entityManager)
+    {
+        $form = $this->createForm(ModifyTrickFormType::class, array('method' => 'PUT'));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $this->trick->setTrickName($form->get('trick_name')->getData());
+            $this->trick->setDescription($form->get('description')->getData());
+            $this->trick->setSlug($form->get('slug')->getData());
+            $entityManager->persist($trick);
+            $entityManager->flush();
+            $this->addFlash('success', 'Commentaire publié');
+            $currentSlug = $request->get('slug');
+            return $this->redirectToRoute('app_trick', ['slug' => $currentSlug]);
+        }
+        return $this->render(
+            'tricks/modify_trick.html.twig',
+            [
+                'ModifyTrickForm' => $form->createView(), 'trick' => $trick
+            ]
         );
     }
 }
