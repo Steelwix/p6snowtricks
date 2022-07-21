@@ -16,7 +16,7 @@ class Media
     #[ORM\Column(type: 'string', length: 80)]
     private $mediaName;
 
-    #[ORM\ManyToOne(targetEntity: trick::class, inversedBy: 'media')]
+    #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'media')]
     #[ORM\JoinColumn(nullable: false)]
     private $idTrick;
 

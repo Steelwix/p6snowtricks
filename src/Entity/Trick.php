@@ -39,6 +39,9 @@ class Trick
     #[ORM\Column(type: 'string', length: 100)]
     private $slug;
 
+    #[ORM\OneToOne(mappedBy: 'idTrick', targetEntity: Illustration::class, cascade: ['persist', 'remove'])]
+    private $illustration;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -166,6 +169,28 @@ class Trick
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getIllustration(): ?Illustration
+    {
+        return $this->illustration;
+    }
+
+    public function setIllustration(?Illustration $illustration): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($illustration === null && $this->illustration !== null) {
+            $this->illustration->setIdTrick(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($illustration !== null && $illustration->getIdTrick() !== $this) {
+            $illustration->setIdTrick($this);
+        }
+
+        $this->illustration = $illustration;
 
         return $this;
     }

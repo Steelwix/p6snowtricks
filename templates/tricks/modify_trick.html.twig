@@ -18,8 +18,8 @@
 					<h2>Media du Trick</h2>
 					{% for media in trick.media %}
 						<div>
-							<img src="{{asset('/uploads/'~ media.mediaName)}}" alt="Image" width="150">
-							<a href="{{path('app_remove_media', {id: media.id}) }}"></a>
+							<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150">
+							<a href="{{path('app_remove_media', {id: media.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ media.id)}}">X</a>
 						</div>
 					{% endfor %}
 				{% endif %}
@@ -27,4 +27,7 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('assets/js/medias.js')}}" defer></script>
 {% endblock %}

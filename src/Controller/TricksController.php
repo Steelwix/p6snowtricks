@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Illustration;
 use App\Entity\Media;
 use App\Entity\Message;
+use App\Entity\ProfilePicture;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
 use App\Entity\User;
@@ -94,6 +96,9 @@ class TricksController extends AbstractController
                 $newMedia = new Media;
                 $newMedia->setMediaName($mediaName);
                 $trick->addMedium($newMedia);
+                $illustration = new Illustration;
+                $illustration->setIdMedia($newMedia);
+                $trick->setIllustration($illustration);
             }
 
             $trick->setAuthor($user);
@@ -131,10 +136,7 @@ class TricksController extends AbstractController
                 $newMedia->setMediaName($mediaName);
                 $trick->addMedium($newMedia);
             }
-            //$trickName = $form->get('trick_name')->getData();
-            //$trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
-            //$trickSlug = strtolower($trickNameNoSpace);
-            // $trick->setSlug($trickSlug);
+
             $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Trick modifié');
@@ -148,7 +150,7 @@ class TricksController extends AbstractController
             ]
         );
     }
-    #[Route('media/remove/{id}', name: 'app_remove_media')]
+    #[Route('media/remove/{id}', name: 'app_remove_media', methods: "DELETE")]
     public function deleteMedia(Media $media, Request $request, EntityManagerInterface $em)
     {
         $data = json_decode($request->getContent(), true);
