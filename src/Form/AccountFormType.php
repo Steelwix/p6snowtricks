@@ -2,20 +2,23 @@
 
 namespace App\Form;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CommentaryFormType extends AbstractType
+class AccountFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('comment', TextType::class, [
-                'label' => '',
+            ->add('profilePicture', FileType::class, [
+                'label' => 'Ajouter une photo de profil',
                 'attr' => [
-                    'placeholder' => '',
+                    'placeholder' => 'Votre commentaire...',
+                    'multiple' => false,
+                    'mapped' => false,
+                    'required' => false,
                     'class' => 'form-control'
                 ]
             ]);

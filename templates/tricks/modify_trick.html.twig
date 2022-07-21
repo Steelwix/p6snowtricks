@@ -14,6 +14,15 @@
 
 				{{ form_row(ModifyTrickForm.slug, {'value': trick.slug})}}
 				<button type="submit" class="btn btn-primary btn-lg">Modifier</button>
+				{% if app.request.attributes.get('_route') == 'app_modify_trick' %}
+					<h2>Media du Trick</h2>
+					{% for media in trick.media %}
+						<div>
+							<img src="{{asset('/uploads/'~ media.mediaName)}}" alt="Image" width="150">
+							<a href="{{path('app_remove_media', {id: media.id}) }}"></a>
+						</div>
+					{% endfor %}
+				{% endif %}
 				{{ form_end(ModifyTrickForm)}}
 			</div>
 		</div>

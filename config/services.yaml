@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     appjwtsecret: '%env(JWT_SECRET)%'
+    profile_picture_directory: '%kernel.project_dir%/public/uploads/profilepicture'
+    media_directory: '%kernel.project_dir%/public/uploads/trickmedia'
 services:
     # default configuration for services in *this* file
     _defaults:

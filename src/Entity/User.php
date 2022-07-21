@@ -46,6 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $resetToken;
 
+    #[ORM\Column(type: 'blob', nullable: true)]
+    private $avatar;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: ProfilePicture::class, cascade: ['persist', 'remove'])]
+    private $profilePicture;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -228,6 +234,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar($avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?ProfilePicture
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(ProfilePicture $profilePicture): self
+    {
+        // set the owning side of the relation if necessary
+        if ($profilePicture->getUser() !== $this) {
+            $profilePicture->setUser($this);
+        }
+
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }

@@ -3,13 +3,14 @@
 namespace App\Form;;
 
 use App\Entity\TrickGroup;
-use App\Entity\Trick;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Repository\TrickGroupRepository;
+
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CreateTrickFormType extends AbstractType
 {
@@ -38,7 +39,17 @@ class CreateTrickFormType extends AbstractType
                 'choice_label' => 'trick_group_name',
                 'multiple' => false,
                 'expanded' => false
-            ]);
+            ])
+            ->add(
+                'media',
+                FileType::class,
+                [
+                    'label' => '',
+                    'multiple' => true,
+                    'mapped' => false,
+                    'required' => false
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -30,10 +30,10 @@ class Trick
     #[ORM\JoinColumn(nullable: false)]
     private $author;
 
-    #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Media::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Media::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $media;
 
-    #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Message::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Message::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $messages;
 
     #[ORM\Column(type: 'string', length: 100)]
