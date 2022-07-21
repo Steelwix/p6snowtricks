@@ -16,12 +16,6 @@ class Media
     #[ORM\Column(type: 'string', length: 80)]
     private $mediaName;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $mediaLink;
-
-    #[ORM\Column(type: 'boolean')]
-    private $is_video;
-
     #[ORM\ManyToOne(targetEntity: trick::class, inversedBy: 'media')]
     #[ORM\JoinColumn(nullable: false)]
     private $idTrick;
@@ -43,29 +37,6 @@ class Media
         return $this;
     }
 
-    public function getMediaLink(): ?string
-    {
-        return $this->mediaLink;
-    }
-
-    public function setMediaLink(string $mediaLink): self
-    {
-        $this->mediaLink = $mediaLink;
-
-        return $this;
-    }
-
-    public function isIsVideo(): ?bool
-    {
-        return $this->is_video;
-    }
-
-    public function setIsVideo(bool $is_video): self
-    {
-        $this->is_video = $is_video;
-
-        return $this;
-    }
 
     public function getIdTrick(): ?trick
     {

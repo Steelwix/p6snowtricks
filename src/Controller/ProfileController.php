@@ -2,18 +2,44 @@
 
 namespace App\Controller;
 
+use App\Entity\ProfilePicture;
+use App\Entity\User;
+use App\Form\AccountFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/profile', name: 'app_profile_')]
+
 class ProfileController extends AbstractController
 {
-    #[Route('/', name: 'index')]
-    public function profile(): Response
+    #[Route('/profile', name: 'app_profile')]
+    public function editProfile(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $form = $this->createForm(AccountFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $profilePicture = $form->get('profilePicture')->getData();
+            if ($profilePicture) {
+
+                $ppName = md5(uniqid()) . '.' . $profilePicture->guessExtension();
+                //Set image in server folders
+                $profilePicture->move(
+                    $this->getParameter('profile_picture_directory'),
+                    $ppName
+                );
+                //Set image name in the database
+                $pp = new ProfilePicture;
+                $pp->setName($ppName);
+                $pp->setUser($user);
+                $entityManager->persist($pp);
+                $entityManager->flush();
+            }
+        }
         return $this->render('profile/profile.html.twig', [
-            'controller_name' => 'Profil utilisateur',
+            'accountForm' => $form->createView(),
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Entity\Message;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
@@ -18,6 +19,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,6 +85,17 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
+            //Get medias from form
+            $medias = $form->get('media')->getData();
+            foreach ($medias as $media) {
+                $mediaName = md5(uniqid()) . '.' . $media->guessExtension();
+                $media->move($this->getParameter('media_directory'), $mediaName);
+
+                $newMedia = new Media;
+                $newMedia->setMediaName($mediaName);
+                $trick->addMedium($newMedia);
+            }
+
             $trick->setAuthor($user);
             $trickName = $form->get('trick_name')->getData();
             $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
@@ -101,18 +114,30 @@ class TricksController extends AbstractController
         );
     }
 
-    #[Route('/modify/trick/{slug}', name: 'app_modify_trick')]
+    #[Route('trick/modify/{slug}', name: 'app_modify_trick')]
     public function modifyTrick(Trick $trick, Request $request, EntityManagerInterface $entityManager)
     {
-        $form = $this->createForm(ModifyTrickFormType::class, array('method' => 'PUT'));
+
+        $form = $this->createForm(ModifyTrickFormType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
-            $this->trick->setTrickName($form->get('trick_name')->getData());
-            $this->trick->setDescription($form->get('description')->getData());
-            $this->trick->setSlug($form->get('slug')->getData());
+            //Get medias from form
+            $medias = $form->get('media')->getData();
+            foreach ($medias as $media) {
+                $mediaName = md5(uniqid()) . '.' . $media->guessExtension();
+                $media->move($this->getParameter('media_directory'), $mediaName);
+
+                $newMedia = new Media;
+                $newMedia->setMediaName($mediaName);
+                $trick->addMedium($newMedia);
+            }
+            //$trickName = $form->get('trick_name')->getData();
+            //$trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
+            //$trickSlug = strtolower($trickNameNoSpace);
+            // $trick->setSlug($trickSlug);
             $entityManager->persist($trick);
             $entityManager->flush();
-            $this->addFlash('success', 'Commentaire publié');
+            $this->addFlash('success', 'Trick modifié');
             $currentSlug = $request->get('slug');
             return $this->redirectToRoute('app_trick', ['slug' => $currentSlug]);
         }
@@ -122,5 +147,19 @@ class TricksController extends AbstractController
                 'ModifyTrickForm' => $form->createView(), 'trick' => $trick
             ]
         );
+    }
+    #[Route('media/remove/{id}', name: 'app_remove_media')]
+    public function deleteMedia(Media $media, Request $request, EntityManagerInterface $em)
+    {
+        $data = json_decode($request->getContent(), true);
+        if ($this->isCsrfTokenValid('delete' . $media->getId(), $data['_token'])) {
+            $mediaName = $media->getMediaName();
+            unlink($this->getParameter('media_directory') . '/' . $mediaName);
+            $em->remove($media);
+            $em->flush();
+            return new JsonResponse(['success' => 1]);
+        } else {
+            return new JsonResponse(['error' => 'Token invalide'], 400);
+        }
     }
 }
