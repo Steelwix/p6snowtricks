@@ -6,7 +6,11 @@
 			<div class="col-12">
 				<h1>{{ trick.trickname }}</h1>
 				<p>Proposé par
-					<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+					{% if trick.author.profilePicture.name  is defined %}
+						<img src="{{asset('/uploads/profilepicture/'~ trick.author.profilePicture.name)}}" alt="Image" height="40" width="40">
+					{% else %}
+						<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+					{% endif %}
 					{{ trick.author.username }}
 				</p>
 				<p></p>
@@ -18,12 +22,23 @@
 				<button type="submit" class="btn btn-primary btn-lg">Publier</button>
 				{{ form_end(comForm)}}</div>
 			<div class="col-12">
+				<h2>Media du Trick</h2>
+				{% for media in trick.media %}
+					<div>
+						<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150">
+
+					</div>
+				{% endfor %}
 				<h5>Commentaires</h5>
 				{% for message in messages %}
 
 					<p>
 						<small>
-							<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+							{% if message.author.profilePicture.name  is defined %}
+								<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
+							{% else %}
+								<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+							{% endif %}
 							<strong>{{message.author.username}}</strong>
 							<i>{{message.date|date("d/m/Y H:i")}}</i>
 						</small>
@@ -31,7 +46,9 @@
 				</p>
 
 				<p>{{message.content}}</p>
-			{% endfor %}
-		</div>
+
+			</div>
+
+		{% endfor %}
 	</div>
 </article>{% endblock %}

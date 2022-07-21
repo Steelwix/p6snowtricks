@@ -10,7 +10,12 @@
 
 			{% for trick in tricks %}
 				<div class="card h-200" style="width: 15rem;">
-					<img class="card-img-top" src="https://user.oc-static.com/upload/2016/11/17/14793747168201_snowboard_neige_figure_saut_shutterstock_3516624621.jpg" alt="Card image cap">
+					{% if trick.illustration.iDmedia.mediaName  is defined %}
+						<img class="card-img-top" src="{{asset('/uploads/trickmedia/'~ trick.illustration.iDmedia.mediaName)}}" alt="Card image cap">
+					{% else %}
+						<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+					{% endif %}
+
 					<a href="">X</a>
 					<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}">E</a>
 					<div class="card-body">
