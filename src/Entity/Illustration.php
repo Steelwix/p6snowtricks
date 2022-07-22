@@ -13,7 +13,7 @@ class Illustration
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToOne(inversedBy: 'illustration', targetEntity: Trick::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'illustration', targetEntity: Trick::class, cascade: ['persist'])]
     private $idTrick;
 
     #[ORM\OneToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
