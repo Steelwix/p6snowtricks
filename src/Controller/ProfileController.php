@@ -36,10 +36,21 @@ class ProfileController extends AbstractController
                 $pp->setUser($user);
                 $entityManager->persist($pp);
                 $entityManager->flush();
+                return $this->redirectToRoute('app_profile');
             }
         }
         return $this->render('profile/profile.html.twig', [
             'accountForm' => $form->createView(),
         ]);
+    }
+    #[Route('/profile/removepp', name: 'app_remove_pp')]
+    public function deletePp(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $pp = $user->getProfilePicture();
+        $em->remove($pp);
+        $em->flush();
+        $this->addFlash('success', 'photo supprimée');
+        return $this->redirectToRoute('app_profile');
     }
 }
