@@ -16,7 +16,7 @@ class ProfilePicture
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\OneToOne(inversedBy: 'profilePicture', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'profilePicture', targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
