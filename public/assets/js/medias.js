@@ -3,7 +3,6 @@ window.onload = () => {
     let links = document.querySelectorAll("[data-delete]")
     console.log(links);
     for (link of links) {
-        console.log(link);
         link.addEventListener("click", function (e) {
             //Lock nav
             e.preventDefault()

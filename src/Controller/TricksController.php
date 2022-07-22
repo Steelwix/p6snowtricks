@@ -150,6 +150,15 @@ class TricksController extends AbstractController
             ]
         );
     }
+
+    #[Route('trick/remove/{slug}', name: 'app_remove_trick')]
+    public function deleteTrick(EntityManagerInterface $em, Trick $trick)
+    {
+        $em->remove($trick);
+        $em->flush();
+        $this->addFlash('success', 'Trick supprimé');
+        return $this->redirectToRoute('app_home_');
+    }
     #[Route('media/remove/{id}', name: 'app_remove_media', methods: "DELETE")]
     public function deleteMedia(Media $media, Request $request, EntityManagerInterface $em)
     {
