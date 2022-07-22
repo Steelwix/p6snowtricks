@@ -109,6 +109,8 @@ class TricksController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Votre nouveau Trick a été publié');
+
+            return $this->redirectToRoute('app_trick', ['slug' => $trickSlug]);
         }
 
         return $this->render(

@@ -48,6 +48,8 @@ class ProfileController extends AbstractController
     {
         $user = $this->getUser();
         $pp = $user->getProfilePicture();
+        $ppName = $pp->getName();
+        unlink($this->getParameter('profile_picture_directory') . '/' . $ppName);
         $em->remove($pp);
         $em->flush();
         $this->addFlash('success', 'photo supprimée');
