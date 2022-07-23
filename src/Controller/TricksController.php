@@ -87,6 +87,17 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
+
+            $illustration = $form->get('illustration')->getData();
+            $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
+            $illustration->move($this->getParameter('media_directory'), $illustrationName);
+
+            $newIllustration = new Media;
+            $newIllustration->setMediaName($illustrationName);
+            $trick->addMedium($newIllustration);
+            $illustration = new Illustration;
+            $illustration->setIdMedia($newIllustration);
+            $trick->setIllustration($illustration);
             //Get medias from form
             $medias = $form->get('media')->getData();
             foreach ($medias as $media) {
@@ -96,9 +107,6 @@ class TricksController extends AbstractController
                 $newMedia = new Media;
                 $newMedia->setMediaName($mediaName);
                 $trick->addMedium($newMedia);
-                $illustration = new Illustration;
-                $illustration->setIdMedia($newMedia);
-                $trick->setIllustration($illustration);
             }
 
             $trick->setAuthor($user);
@@ -122,7 +130,7 @@ class TricksController extends AbstractController
     }
 
     #[Route('trick/modify/{slug}', name: 'app_modify_trick')]
-    public function modifyTrick(Trick $trick, Request $request, EntityManagerInterface $entityManager)
+    public function modifyTrick(Trick $trick, TrickRepository $tr, Request $request, EntityManagerInterface $entityManager)
     {
 
         $form = $this->createForm(ModifyTrickFormType::class, $trick);
@@ -138,12 +146,29 @@ class TricksController extends AbstractController
                 $newMedia->setMediaName($mediaName);
                 $trick->addMedium($newMedia);
             }
+            if ($trick->getIllustration() == null) {
+                $illustration = $form->get('illustration')->getData();
+                $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
+                $illustration->move($this->getParameter('media_directory'), $illustrationName);
 
+                $newIllustration = new Media;
+                $newIllustration->setMediaName($illustrationName);
+                $trick->addMedium($newIllustration);
+                $illustration = new Illustration;
+                $illustration->setIdMedia($newIllustration);
+                $trick->setIllustration($illustration);
+            }
+
+            $user  = $this->getUser();
+            $trick->setAuthor($user);
+            $trickName = $form->get('trick_name')->getData();
+            $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
+            $trickSlug = strtolower($trickNameNoSpace);
+            $trick->setSlug($trickSlug);
             $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Trick modifié');
-            $currentSlug = $request->get('slug');
-            return $this->redirectToRoute('app_trick', ['slug' => $currentSlug]);
+            return $this->redirectToRoute('app_home_');
         }
         return $this->render(
             'tricks/modify_trick.html.twig',
@@ -162,7 +187,7 @@ class TricksController extends AbstractController
         return $this->redirectToRoute('app_home_');
     }
     #[Route('media/remove/{id}', name: 'app_remove_media', methods: "DELETE")]
-    public function deleteMedia(Media $media, Request $request, EntityManagerInterface $em)
+    public function deleteMedia(Request $request, Media $media, EntityManagerInterface $em)
     {
         $data = json_decode($request->getContent(), true);
         if ($this->isCsrfTokenValid('delete' . $media->getId(), $data['_token'])) {
@@ -174,5 +199,16 @@ class TricksController extends AbstractController
         } else {
             return new JsonResponse(['error' => 'Token invalide'], 400);
         }
+    }
+    #[Route('media/remove/illustration/{slug}', name: 'app_remove_illustration')]
+    public function deleteIllustration(Request $request, Trick $trick, EntityManagerInterface $em)
+    {
+
+        $this->addFlash('success', 'Image d\'illustration supprimée');
+        $slug = $request->get('slug');
+        $illustration = $trick->getIllustration();
+        $em->remove($illustration);
+        $em->flush();
+        return $this->redirectToRoute('app_modify_trick', ['slug' => $slug]);
     }
 }

@@ -8,11 +8,14 @@
 		<div class="row">
 			<div class="col-12">
 				<h1>Modifier un trick</h1>
+				{% if trick.illustration.iDmedia.mediaName is defined %}
+					<img src="{{asset('/uploads/trickmedia/'~ trick.illustration.iDmedia.mediaName)}}" alt="Image" width="150">
+				{% endif %}
 				{{ form_start(ModifyTrickForm)}}
 				{{ form_row(ModifyTrickForm.trick_name, {'value': trick.trickname})}}
 				{{ form_row(ModifyTrickForm.description, {'value': trick.description})}}
-
-				{{ form_row(ModifyTrickForm.slug, {'value': trick.slug})}}
+				{{ form_row(ModifyTrickForm.media)}}
+				{{ form_row(ModifyTrickForm.illustration)}}
 				<button type="submit" class="btn btn-primary btn-lg">Modifier</button>
 				{% if app.request.attributes.get('_route') == 'app_modify_trick' %}
 					<h2>Media du Trick</h2>
