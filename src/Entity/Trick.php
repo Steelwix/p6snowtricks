@@ -42,7 +42,7 @@ class Trick
     #[ORM\OneToOne(mappedBy: 'idTrick', targetEntity: Illustration::class, cascade: ['persist', 'remove'])]
     private $illustration;
 
-    #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Video::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Video::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $videos;
 
     public function __construct()

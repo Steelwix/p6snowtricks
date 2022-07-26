@@ -9,6 +9,7 @@ use App\Entity\ProfilePicture;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
 use App\Entity\User;
+use App\Entity\Video;
 use App\Form\CommentaryFormType;
 use App\Form\CreateTrickFormType;
 use App\Form\ModifyTrickFormType;
@@ -16,6 +17,7 @@ use App\Repository\MessageRepository;
 use App\Repository\TrickGroupRepository;
 use App\Repository\UserRepository;
 use App\Repository\TrickRepository;
+use App\Repository\VideoRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,11 +48,13 @@ class TricksController extends AbstractController
         MessageRepository $messageRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        VideoRepository $vr
     ): Response {
 
         $user = $this->getUser();
         $messages = $messageRepository->findByIdTrick($trick);
+        $videos = $vr->findByIdTrick($trick);
         $form = $this->createForm(CommentaryFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
@@ -70,7 +74,7 @@ class TricksController extends AbstractController
             'tricks/tricks.html.twig',
             [
                 'comForm' => $form->createView(),
-                'trick' => $trick, 'messages' => $messages
+                'trick' => $trick, 'messages' => $messages, 'videos' => $videos
 
             ]
 
@@ -98,6 +102,7 @@ class TricksController extends AbstractController
             $illustration = new Illustration;
             $illustration->setIdMedia($newIllustration);
             $trick->setIllustration($illustration);
+
             //Get medias from form
             $medias = $form->get('media')->getData();
             foreach ($medias as $media) {
@@ -114,7 +119,12 @@ class TricksController extends AbstractController
             $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
             $trickSlug = strtolower($trickNameNoSpace);
             $trick->setSlug($trickSlug);
+            $video = new Video;
+            $video->setLink($form->get('url')->getData());
+            $video->setIdTrick($trick);
+            $trick->addVideo($video);
             $entityManager->persist($trick);
+            $entityManager->persist($video);
             $entityManager->flush();
             $this->addFlash('success', 'Votre nouveau Trick a été publié');
 
@@ -130,9 +140,9 @@ class TricksController extends AbstractController
     }
 
     #[Route('trick/modify/{slug}', name: 'app_modify_trick')]
-    public function modifyTrick(Trick $trick, TrickRepository $tr, Request $request, EntityManagerInterface $entityManager)
+    public function modifyTrick(Trick $trick, TrickRepository $tr, VideoRepository $vr, Request $request, EntityManagerInterface $entityManager)
     {
-
+        $videos = $vr->findByIdTrick($trick);
         $form = $this->createForm(ModifyTrickFormType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
@@ -173,7 +183,7 @@ class TricksController extends AbstractController
         return $this->render(
             'tricks/modify_trick.html.twig',
             [
-                'ModifyTrickForm' => $form->createView(), 'trick' => $trick
+                'ModifyTrickForm' => $form->createView(), 'trick' => $trick, 'videos' => $videos
             ]
         );
     }

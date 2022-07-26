@@ -21,8 +21,9 @@ class ProfileController extends AbstractController
         $form = $this->createForm(AccountFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
+
             $profilePicture = $form->get('profilePicture')->getData();
-            if ($profilePicture) {
+            if ($user->getProfilePicture() == null) {
 
                 $ppName = md5(uniqid()) . '.' . $profilePicture->guessExtension();
                 //Set image in server folders

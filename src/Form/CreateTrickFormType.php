@@ -3,10 +3,11 @@
 namespace App\Form;;
 
 use App\Entity\TrickGroup;
-
+use App\Entity\Video;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -47,7 +48,7 @@ class CreateTrickFormType extends AbstractType
                     'label' => 'Image d\'illustration',
                     'multiple' => false,
                     'mapped' => false,
-                    'required' => false
+                    'required' => true
                 ]
             )
             ->add(
@@ -56,6 +57,15 @@ class CreateTrickFormType extends AbstractType
                 [
                     'label' => '',
                     'multiple' => true,
+                    'mapped' => false,
+                    'required' => false
+                ]
+            )
+            ->add(
+                'url',
+                TextType::class,
+                [
+                    'label' => 'url',
                     'mapped' => false,
                     'required' => false
                 ]

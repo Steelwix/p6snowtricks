@@ -34,7 +34,7 @@
 		{{ form_end(accountForm)}}
 		{% if app.user.profilePicture.name  is defined %}
 			<img src="{{asset('/uploads/profilepicture/'~ app.user.profilePicture.name)}}" alt="Image" width="150">
-			<a href="{{path('app_remove_pp')}}">X</a>
+			<a href="{{path('app_remove_pp')}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a>
 		{% else %}
 			<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
 			<p>Pas de photo de profil</p>
