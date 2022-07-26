@@ -37,14 +37,16 @@ class ModifyTrickFormType extends AbstractType
             //'class' => 'form-control'
             //]
             // ])
-
-            ->add('slug', TextType::class, [
-                'label' => 'Tag',
-                'attr' => [
-                    'placeholder' => '',
-                    'class' => 'form-control'
+            ->add(
+                'illustration',
+                FileType::class,
+                [
+                    'label' => 'Image d\'illustration',
+                    'multiple' => false,
+                    'mapped' => false,
+                    'required' => false
                 ]
-            ])
+            )
             ->add(
                 'media',
                 FileType::class,

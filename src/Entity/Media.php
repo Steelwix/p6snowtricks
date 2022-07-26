@@ -20,6 +20,9 @@ class Media
     #[ORM\JoinColumn(nullable: false)]
     private $idTrick;
 
+    #[ORM\OneToMany(mappedBy: 'idMedia', targetEntity: Illustration::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private $illustration;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,17 @@ class Media
     public function setIdTrick(?trick $idTrick): self
     {
         $this->idTrick = $idTrick;
+
+        return $this;
+    }
+    public function getIllustration(): ?Illustration
+    {
+        return $this->illustration;
+    }
+
+    public function setIllustration(?Illustration $illustration): self
+    {
+        $this->illustration = $illustration;
 
         return $this;
     }

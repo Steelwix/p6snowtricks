@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<article class="containter">
+	<article class="container">
 		<div class="row">
 			<div class="col-12">
 				<h1>{{ trick.trickname }}</h1>
@@ -13,7 +13,10 @@
 					{% endif %}
 					{{ trick.author.username }}
 				</p>
-				<p></p>
+
+				{% if trick.illustration.iDmedia.mediaName is defined %}
+					<img class="img-fluid max-width:100% height: auto" src="{{asset('/uploads/trickmedia/'~ trick.illustration.iDmedia.mediaName)}}" alt="Image" height="15%">
+				{% endif %}
 				<p>{{ trick.description }}</p>
 			</div>
 			<div class="col-12">
@@ -25,30 +28,35 @@
 				<h2>Media du Trick</h2>
 				{% for media in trick.media %}
 					<div>
-						<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150">
+						<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"></img>
 
-					</div>
-				{% endfor %}
-				<h5>Commentaires</h5>
-				{% for message in messages %}
 
-					<p>
-						<small>
-							{% if message.author.profilePicture.name  is defined %}
-								<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
-							{% else %}
-								<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
-							{% endif %}
-							<strong>{{message.author.username}}</strong>
-							<i>{{message.date|date("d/m/Y H:i")}}</i>
-						</small>
-					</p>
+				</div>
+
+			{% endfor %}
+			{% for video in videos %}
+				<iframe width="420" height="315" src="{{video.link}}"></iframe>
+			{% endfor %}
+
+			<h5>Commentaires</h5>
+			{% for message in messages %}
+
+				<p>
+					<small>
+						{% if message.author.profilePicture.name  is defined %}
+							<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
+						{% else %}
+							<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+						{% endif %}
+						<strong>{{message.author.username}}</strong>
+						<i>{{message.date|date("d/m/Y H:i")}}</i>
+					</small>
 				</p>
+			</p>
 
-				<p>{{message.content}}</p>
+			<p>{{message.content}}</p>
 
-			</div>
+		</div>
 
-		{% endfor %}
-	</div>
-</article>{% endblock %}
+	{% endfor %}
+</div></article>{% endblock %}

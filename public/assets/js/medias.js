@@ -1,7 +1,6 @@
 window.onload = () => {
     // Delete button manager
     let links = document.querySelectorAll("[data-delete]")
-    console.log(links);
     for (link of links) {
         link.addEventListener("click", function (e) {
             //Lock nav
@@ -15,10 +14,12 @@ window.onload = () => {
                         "X-Requested-Width": "XMLHttpRequest",
                         "Content-Type": "application/json"
                     },
+
                     body: JSON.stringify({ "_token": this.dataset.token })
                 }).then(
                     //Get JSON Response
                     response => response.json()
+
                 ).then(data => {
                     if (data.success)
                         this.parentElement.remove()
