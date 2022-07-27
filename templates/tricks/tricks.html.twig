@@ -13,7 +13,7 @@
 					{% endif %}
 					{{ trick.author.username }}
 				</p>
-
+				<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
 				{% if trick.illustration.iDmedia.mediaName is defined %}
 					<img class="img-fluid max-width:100% height: auto" src="{{asset('/uploads/trickmedia/'~ trick.illustration.iDmedia.mediaName)}}" alt="Image" height="15%">
 				{% endif %}

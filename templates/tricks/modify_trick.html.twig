@@ -16,6 +16,7 @@
 				{{ form_row(ModifyTrickForm.description, {'value': trick.description})}}
 				{{ form_row(ModifyTrickForm.media)}}
 				{{ form_row(ModifyTrickForm.illustration)}}
+				{{ form_row(ModifyTrickForm.url)}}
 				<button type="submit" class="btn btn-primary btn-lg">Modifier</button>
 				{% if app.request.attributes.get('_route') == 'app_modify_trick' %}
 					<h2>Media du Trick</h2>
@@ -27,7 +28,7 @@
 					{% endfor %}
 					{% for video in videos %}
 						<iframe width="420" height="315" src="{{video.link}}"></iframe>
-						<img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20">
+						<a href="{{path('app_remove_video', {id: video.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ video.id)}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a>
 					{% endfor %}
 				{% endif %}
 				{{ form_end(ModifyTrickForm)}}

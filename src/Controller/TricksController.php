@@ -93,25 +93,28 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() and $form->isValid()) {
 
             $illustration = $form->get('illustration')->getData();
-            $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
-            $illustration->move($this->getParameter('media_directory'), $illustrationName);
+            if ($illustration !== null) {
+                $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
+                $illustration->move($this->getParameter('media_directory'), $illustrationName);
 
-            $newIllustration = new Media;
-            $newIllustration->setMediaName($illustrationName);
-            $trick->addMedium($newIllustration);
-            $illustration = new Illustration;
-            $illustration->setIdMedia($newIllustration);
-            $trick->setIllustration($illustration);
-
+                $newIllustration = new Media;
+                $newIllustration->setMediaName($illustrationName);
+                $trick->addMedium($newIllustration);
+                $illustration = new Illustration;
+                $illustration->setIdMedia($newIllustration);
+                $trick->setIllustration($illustration);
+            }
             //Get medias from form
             $medias = $form->get('media')->getData();
-            foreach ($medias as $media) {
-                $mediaName = md5(uniqid()) . '.' . $media->guessExtension();
-                $media->move($this->getParameter('media_directory'), $mediaName);
+            if ($medias !== null) {
+                foreach ($medias as $media) {
+                    $mediaName = md5(uniqid()) . '.' . $media->guessExtension();
+                    $media->move($this->getParameter('media_directory'), $mediaName);
 
-                $newMedia = new Media;
-                $newMedia->setMediaName($mediaName);
-                $trick->addMedium($newMedia);
+                    $newMedia = new Media;
+                    $newMedia->setMediaName($mediaName);
+                    $trick->addMedium($newMedia);
+                }
             }
 
             $trick->setAuthor($user);
@@ -120,11 +123,14 @@ class TricksController extends AbstractController
             $trickSlug = strtolower($trickNameNoSpace);
             $trick->setSlug($trickSlug);
             $video = new Video;
-            $video->setLink($form->get('url')->getData());
-            $video->setIdTrick($trick);
-            $trick->addVideo($video);
+            $link = $form->get('url')->getData();
+            if ($link !== null) {
+                $video->setLink($link);
+                $video->setIdTrick($trick);
+                $trick->addVideo($video);
+                $entityManager->persist($video);
+            }
             $entityManager->persist($trick);
-            $entityManager->persist($video);
             $entityManager->flush();
             $this->addFlash('success', 'Votre nouveau Trick a été publié');
 
@@ -158,17 +164,30 @@ class TricksController extends AbstractController
             }
             if ($trick->getIllustration() == null) {
                 $illustration = $form->get('illustration')->getData();
-                $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
-                $illustration->move($this->getParameter('media_directory'), $illustrationName);
+                if ($illustration !== null) {
 
-                $newIllustration = new Media;
-                $newIllustration->setMediaName($illustrationName);
-                $trick->addMedium($newIllustration);
-                $illustration = new Illustration;
-                $illustration->setIdMedia($newIllustration);
-                $trick->setIllustration($illustration);
+
+                    $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
+                    $illustration->move($this->getParameter('media_directory'), $illustrationName);
+
+                    $newIllustration = new Media;
+                    $newIllustration->setMediaName($illustrationName);
+                    $trick->addMedium($newIllustration);
+                    $illustration = new Illustration;
+                    $illustration->setIdMedia($newIllustration);
+                    $trick->setIllustration($illustration);
+                }
             }
-
+            $video = new Video;
+            $link = $form->get('url')->getData();
+            if ($link !== null) {
+                $link = (new UnicodeString($link))
+                    ->replace('watch?v=', 'embed/');
+                $video->setLink($link);
+                $video->setIdTrick($trick);
+                $trick->addVideo($video);
+                $entityManager->persist($video);
+            }
             $user  = $this->getUser();
             $trick->setAuthor($user);
             $trickName = $form->get('trick_name')->getData();
@@ -196,7 +215,7 @@ class TricksController extends AbstractController
         $this->addFlash('success', 'Trick supprimé');
         return $this->redirectToRoute('app_home_');
     }
-    #[Route('media/remove/{id}', name: 'app_remove_media', methods: "DELETE")]
+    #[Route('media/remove/media/{id}', name: 'app_remove_media', methods: "DELETE")]
     public function deleteMedia(Request $request, Media $media, EntityManagerInterface $em)
     {
         $data = json_decode($request->getContent(), true);
@@ -210,15 +229,16 @@ class TricksController extends AbstractController
             return new JsonResponse(['error' => 'Token invalide'], 400);
         }
     }
-    #[Route('media/remove/illustration/{slug}', name: 'app_remove_illustration')]
-    public function deleteIllustration(Request $request, Trick $trick, EntityManagerInterface $em)
+    #[Route('media/remove/video/{id}', name: 'app_remove_video', methods: "DELETE")]
+    public function deleteVideo(Request $request, Video $video, EntityManagerInterface $em)
     {
-
-        $this->addFlash('success', 'Image d\'illustration supprimée');
-        $slug = $request->get('slug');
-        $illustration = $trick->getIllustration();
-        $em->remove($illustration);
-        $em->flush();
-        return $this->redirectToRoute('app_modify_trick', ['slug' => $slug]);
+        $data = json_decode($request->getContent(), true);
+        if ($this->isCsrfTokenValid('delete' . $video->getId(), $data['_token'])) {
+            $em->remove($video);
+            $em->flush();
+            return new JsonResponse(['success' => 1]);
+        } else {
+            return new JsonResponse(['error' => 'Token invalide'], 400);
+        }
     }
 }

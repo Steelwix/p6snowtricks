@@ -56,6 +56,15 @@ class ModifyTrickFormType extends AbstractType
                     'mapped' => false,
                     'required' => false
                 ]
+            )
+            ->add(
+                'url',
+                TextType::class,
+                [
+                    'label' => 'url',
+                    'mapped' => false,
+                    'required' => false
+                ]
             );
     }
 
