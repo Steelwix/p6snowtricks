@@ -48,7 +48,7 @@ class CreateTrickFormType extends AbstractType
                     'label' => 'Image d\'illustration',
                     'multiple' => false,
                     'mapped' => false,
-                    'required' => true
+                    'required' => false
                 ]
             )
             ->add(

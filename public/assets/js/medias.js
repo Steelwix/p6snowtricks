@@ -6,7 +6,7 @@ window.onload = () => {
             //Lock nav
             e.preventDefault()
             //Confirm delete
-            if (confirm("Voulez-vous supprimer cette image?")) {
+            if (confirm("Voulez-vous vraiment supprimer cet élément?")) {
                 //Send AJAX request to the href link with the delete method
                 fetch(this.getAttribute("href"), {
                     method: "DELETE",
