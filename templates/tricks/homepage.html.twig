@@ -15,11 +15,12 @@
 					{% else %}
 						<img class="img-fluid" height="200" width="200" src="https://user.oc-static.com/upload/2016/11/17/14793747168201_snowboard_neige_figure_saut_shutterstock_3516624621.jpg" alt="Card image cap">
 					{% endif %}
+					{% if app.user.username is defined and app.user.isVerified == 1 %}
+						<a href="{{ path('app_remove_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20">
+						</a>
 
-					<a href="{{ path('app_remove_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20">
-					</a>
-
-					<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
+						<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
+					{% endif %}
 					<div class="card-body">
 						<h3 class="card-title">{{trick.trickname}}</h3>
 						<p class="card-text">{{trick.trickGroup.trickGroupName}}</p>

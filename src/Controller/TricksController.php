@@ -53,7 +53,7 @@ class TricksController extends AbstractController
     ): Response {
 
         $user = $this->getUser();
-        $messages = $messageRepository->findByIdTrick($trick);
+        $messages = $messageRepository->findBy(['idTrick' => $trick], ['date' => 'DESC'], 10, 0);
         $videos = $vr->findByIdTrick($trick);
         $form = $this->createForm(CommentaryFormType::class);
         $form->handleRequest($request);
