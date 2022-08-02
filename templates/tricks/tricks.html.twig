@@ -19,11 +19,13 @@
 				{% endif %}
 				<p>{{ trick.description }}</p>
 			</div>
-			<div class="col-12">
-				{{ form_start(comForm)}}
-				{{ form_row(comForm.comment)}}
-				<button type="submit" class="btn btn-primary btn-lg">Publier</button>
-				{{ form_end(comForm)}}</div>
+			{% if app.user.username is defined and app.user.isVerified == 1 %}
+				<div class="col-12">
+					{{ form_start(comForm)}}
+					{{ form_row(comForm.comment)}}
+					<button type="submit" class="btn btn-primary btn-lg">Publier</button>
+					{{ form_end(comForm)}}</div>
+			{% endif %}
 			<div class="col-12">
 				<h2>Media du Trick</h2>
 				{% for media in trick.media %}
