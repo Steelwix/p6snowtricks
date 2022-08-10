@@ -13,50 +13,57 @@
 					{% endif %}
 					{{ trick.author.username }}
 				</p>
-				<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
+				{% if app.user.username is defined and app.user.isVerified == 1 %}
+					<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
+				{% endif %}
 				{% if trick.illustration.iDmedia.mediaName is defined %}
 					<img class="img-fluid max-width:100% height: auto" src="{{asset('/uploads/trickmedia/'~ trick.illustration.iDmedia.mediaName)}}" alt="Image" height="15%">
 				{% endif %}
 				<p>{{ trick.description }}</p>
 			</div>
-			<div class="col-12">
-				{{ form_start(comForm)}}
-				{{ form_row(comForm.comment)}}
-				<button type="submit" class="btn btn-primary btn-lg">Publier</button>
-				{{ form_end(comForm)}}</div>
+			{% if app.user.username is defined and app.user.isVerified == 1 %}
+				<div class="col-12">
+					{{ form_start(comForm)}}
+					{{ form_row(comForm.comment)}}
+					<button type="submit" class="btn btn-primary btn-lg">Publier</button>
+					{{ form_end(comForm)}}</div>
+			{% endif %}
 			<div class="col-12">
 				<h2>Media du Trick</h2>
 				{% for media in trick.media %}
-					<div>
-						<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"></img>
 
+					<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"></img>
 
-				</div>
 
 			{% endfor %}
+		</div>
+		<div class="col-12">
 			{% for video in videos %}
+
 				<iframe width="420" height="315" src="{{video.link}}"></iframe>
 			{% endfor %}
-
+		</div>
+		<div class="col-12">
 			<h5>Commentaires</h5>
 			{% for message in messages %}
+				<div class="col-md-4">
+					<p>
+						<small>
+							{% if message.author.profilePicture.name  is defined %}
+								<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
+							{% else %}
+								<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+							{% endif %}
+							<strong>{{message.author.username}}</strong>
+							<i>{{message.date|date("d/m/Y H:i")}}</i>
+						</small>
+					</p>
+					<p>{{message.content}}</p>
+				</div>
+			{% endfor %}
 
-				<p>
-					<small>
-						{% if message.author.profilePicture.name  is defined %}
-							<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
-						{% else %}
-							<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
-						{% endif %}
-						<strong>{{message.author.username}}</strong>
-						<i>{{message.date|date("d/m/Y H:i")}}</i>
-					</small>
-				</p>
-			</p>
-
-			<p>{{message.content}}</p>
+			<a href="" class="load-more">Load More</a>
 
 		</div>
-
-	{% endfor %}
-</div></article>{% endblock %}
+	</div>
+</article>{% endblock %}

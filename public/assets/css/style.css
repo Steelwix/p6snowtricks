@@ -1,0 +1,64 @@
+.container {
+    margin: 30px auto;
+}
+
+.col-md-4 {
+    display: none;
+}
+
+.col-md-12 {
+    display: none;
+}
+
+.content {
+    background-color: #333;
+    height: 200px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+}
+
+.load-more {
+    background-color: rgb(168, 168, 168);
+    color: #fff !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 20px;
+    margin: 50px 0;
+    display: inline-block;
+}
+
+.load-more:hover {
+    background-color: rgb(108, 176, 255);
+    text-decoration: none;
+}
+
+.top-section {
+    background: url('../../../uploads/snowboard-g9ba239ead_1920.jpg') center center / cover no-repeat;
+    height: 100vh;
+}
+
+.top-section h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font: normal 300 64px/1 'Josefin Sans', sans-serif;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.top-section .down-arrow {
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    z-index: 2;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font: normal 300 64px/1 'Josefin Sans', sans-serif;
+    text-align: center;
+    white-space: nowrap;
+}
