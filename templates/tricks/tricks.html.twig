@@ -46,20 +46,24 @@
 		<div class="col-12">
 			<h5>Commentaires</h5>
 			{% for message in messages %}
-
-				<p>
-					<small>
-						{% if message.author.profilePicture.name  is defined %}
-							<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
-						{% else %}
-							<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
-						{% endif %}
-						<strong>{{message.author.username}}</strong>
-						<i>{{message.date|date("d/m/Y H:i")}}</i>
-					</small>
-				</p>
-				<p>{{message.content}}</p>
+				<div class="col-md-4">
+					<p>
+						<small>
+							{% if message.author.profilePicture.name  is defined %}
+								<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
+							{% else %}
+								<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+							{% endif %}
+							<strong>{{message.author.username}}</strong>
+							<i>{{message.date|date("d/m/Y H:i")}}</i>
+						</small>
+					</p>
+					<p>{{message.content}}</p>
+				</div>
 			{% endfor %}
+
+			<a href="" class="load-more">Load More</a>
+
 		</div>
 	</div>
-</div></article>{% endblock %}
+</article>{% endblock %}

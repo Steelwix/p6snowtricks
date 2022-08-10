@@ -1,40 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+	<section id="top-section" class="top-section">
+		<h1>SNOWTRICKS</h1>
+		<a class="down-arrow" href="#toppage"><img src="{{asset('/assets/icons/arrow-down-w.svg')}}" alt="Image" width="50"></a>
+	</section>
+
+
 	<section class="container">
 		<div class="row">
-			<div class="col-12">
+			<div id="toppage" class="col-12 text-center">
 				<h1>{{title}}</h1>
-
 			</div>
 
 			{% for trick in tricks %}
-				<div class="card h-200" style="width: 15rem;">
-					{% if trick.illustration.iDmedia.mediaName  is defined %}
-						<img class="img-fluid" height="200" width="200" src="{{asset('/uploads/trickmedia/'~ trick.illustration.idMedia.mediaName)}}" alt="Card image cap">
-					{% else %}
-						<img class="img-fluid" height="200" width="200" src="https://user.oc-static.com/upload/2016/11/17/14793747168201_snowboard_neige_figure_saut_shutterstock_3516624621.jpg" alt="Card image cap">
-					{% endif %}
-					{% if app.user.username is defined and app.user.isVerified == 1 %}
-						<a href="{{ path('app_remove_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20">
-						</a>
+				<div class="col-md-4">
+					<div class="card">
+						{% if trick.illustration.iDmedia.mediaName  is defined %}
+							<img class="img-fluid mx-auto d-block" height="200" width="200" src="{{asset('/uploads/trickmedia/'~ trick.illustration.idMedia.mediaName)}}" alt="Card image cap">
+						{% else %}
+							<img class="img-fluid mx-auto d-block" height="200" width="200" src="https://user.oc-static.com/upload/2016/11/17/14793747168201_snowboard_neige_figure_saut_shutterstock_3516624621.jpg" alt="Card image cap">
+						{% endif %}
 
-						<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
-					{% endif %}
-					<div class="card-body">
-						<h3 class="card-title">{{trick.trickname}}</h3>
-						<p class="card-text">{{trick.trickGroup.trickGroupName}}</p>
-						<small>
-							<p class="card-text">{{trick.description}}</p>
-						</small>
+						<div class="card-body">
+							<h3 class="card-title">{{trick.trickname}}</h3>
+							<p class="card-text">{{trick.trickGroup.trickGroupName}}</p>
+							<small>
+								<p class="card-text">{{trick.description}}</p>
+							</small>
 
-						<a href="{{ path('app_trick',{slug: trick.slug}) }}" class=" btn btn-primary">Lire</a>
+							<a href="{{ path('app_trick',{slug: trick.slug}) }}" class=" btn btn-primary">Lire</a>
+							{% if app.user.username is defined and app.user.isVerified == 1 %}
+								<a href="{{ path('app_remove_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20">
+								</a>
+
+								<a href="{{ path('app_modify_trick',{slug: trick.slug}) }}"><img src="{{asset('/assets/icons/pen.svg')}}" alt="Image" width="20"></a>
+							{% endif %}
+						</div>
 					</div>
 				</div>
 
 
 			{% endfor %}
+			<div class="col-4 mx-auto text-center">
+				<a href="" class="load-more">Load More</a>
 
+			</div>
+			<div class="col-12">
+				<a class="" href="#toppage"><img class="" src=" {{asset('/assets/icons/arrow-up.svg')}} " alt=" Image" width=" 20"></a>
+			</div>
 		</div>
 	</section>
+
 {% endblock %}

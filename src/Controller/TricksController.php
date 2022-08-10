@@ -35,11 +35,16 @@ class TricksController extends AbstractController
     public function homepage(TrickRepository $trickRepository): Response
     {
         return $this->render('tricks/homepage.html.twig', [
-            'title' => 'Snow Tricks', 'tricks' => $trickRepository->findBy(
+            'title' => 'SNOWTRICKS', 'tricks' => $trickRepository->findBy(
                 [],
                 ['trickName' => 'asc']
             )
         ]);
+    }
+    #[Route('/test', name: 'app_test')]
+    public function Test()
+    {
+        return $this->render('tricks/test.html.twig');
     }
     #[Route('trick/{slug}', name: 'app_trick')]
     public function show(
@@ -53,7 +58,7 @@ class TricksController extends AbstractController
     ): Response {
 
         $user = $this->getUser();
-        $messages = $messageRepository->findBy(['idTrick' => $trick], ['date' => 'DESC'], 10, 0);
+        $messages = $messageRepository->findBy(['idTrick' => $trick], ['date' => 'DESC']);
         $videos = $vr->findByIdTrick($trick);
         $form = $this->createForm(CommentaryFormType::class);
         $form->handleRequest($request);
