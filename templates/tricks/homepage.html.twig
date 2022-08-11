@@ -2,7 +2,12 @@
 
 {% block body %}
 	<section id="top-section" class="top-section">
-		<h1>SNOWTRICKS</h1>
+		<a id="button"></a>
+		<div class="col-12 text-center">
+			<h1>SNOWTRICKS</h1>
+
+
+		</div>
 		<a class="down-arrow" href="#toppage"><img src="{{asset('/assets/icons/arrow-down-w.svg')}}" alt="Image" width="50"></a>
 	</section>
 
@@ -47,7 +52,10 @@
 
 			</div>
 			<div class="col-12">
-				<a class="" href="#toppage"><img class="" src=" {{asset('/assets/icons/arrow-up.svg')}} " alt=" Image" width=" 20"></a>
+				<a class="bot-arrow" href="#toppage"><img class="" src=" {{asset('/assets/icons/arrow-up.svg')}} " alt=" Image" width=" 50"></a>
+				<a id="scroll-button" class="btn btn-dark position-fixed bottom-0 end-0 m-4 scroll-button" href="#tricks" role="button">
+					<i id="bi-arrow-up" class="bi bi-arrow-up"></i>
+				</a>
 			</div>
 		</div>
 	</section>

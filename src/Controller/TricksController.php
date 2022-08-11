@@ -35,7 +35,7 @@ class TricksController extends AbstractController
     public function homepage(TrickRepository $trickRepository): Response
     {
         return $this->render('tricks/homepage.html.twig', [
-            'title' => 'SNOWTRICKS', 'tricks' => $trickRepository->findBy(
+            'title' => 'Tous les tricks', 'tricks' => $trickRepository->findBy(
                 [],
                 ['trickName' => 'asc']
             )

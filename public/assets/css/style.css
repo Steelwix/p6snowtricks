@@ -45,9 +45,10 @@
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     color: #fff;
-    font: normal 300 64px/1 'Josefin Sans', sans-serif;
-    text-align: center;
-    white-space: nowrap;
+    font-family: 'Kanit', sans-serif;
+    font-size: 10vw;
+    text-shadow: 10px 10px 20px rgb(0, 0, 0);
+
 }
 
 .top-section .down-arrow {
@@ -57,8 +58,30 @@
     z-index: 2;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    color: #fff;
+    color: rgb(0, 0, 0);
     font: normal 300 64px/1 'Josefin Sans', sans-serif;
     text-align: center;
     white-space: nowrap;
+}
+
+
+.top-section .down-arrow:hover {
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    z-index: 2;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font: normal 300 128px/1 'Josefin Sans', sans-serif;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#bi-arrow-up {
+    visibility: hidden;
+}
+
+#scroll-button {
+    visibility: hidden;
 }
