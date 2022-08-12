@@ -10,7 +10,9 @@ window.addEventListener('scroll', () => {
         scrollButton.href = '#toppage';
         scrollButton.addEventListener("click", function (backToTop) {
             //Lock nav
-            e.preventDefault()
+            backToTop.preventDefault()
+
+
 
         })
     }

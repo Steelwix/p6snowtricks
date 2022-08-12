@@ -45,6 +45,12 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'idTrick', targetEntity: Video::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $videos;
 
+    #[ORM\Column(type: 'date')]
+    private $creationDate;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $modificationDate;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -225,6 +231,30 @@ class Trick
                 $video->setIdTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeInterface
+    {
+        return $this->modificationDate;
+    }
+
+    public function setModificationDate(?\DateTimeInterface $modificationDate): self
+    {
+        $this->modificationDate = $modificationDate;
 
         return $this;
     }
