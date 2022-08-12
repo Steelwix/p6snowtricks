@@ -1,27 +1,23 @@
-const button = document.querySelector('.btn');
+var scrollButton = document.getElementsByClassName('scroll-button');
+var arrow = document.getElementsByClassName('bi-arrow-up');
+console.log(arrow);
+window.addEventListener('scroll', () => {
+    console.log(window.scrollY);
+    if (window.scrollY >= 800) {
 
-const displayButton = () => {
-    window.addEventListener('scroll', () => {
-        console.log(window.scrollY);
+        arrow[0].style.visibility = 'visible';
+        scrollButton[0].style.visibility = 'visible';
+        scrollButton.href = '#toppage';
+        scrollButton.addEventListener("click", function (backToTop) {
+            //Lock nav
+            backToTop.preventDefault()
 
-        if (window.scrollY > 100) {
-            button.style.display = "block";
-        } else {
-            button.style.display = "none";
-        }
-    });
-};
 
-const scrollToTop = () => {
-    button.addEventListener("click", () => {
-        window.scroll({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        });
-        console.log(event);
-    });
-};
 
-displayButton();
-scrollToTop();
+        })
+    }
+    else {
+        arrow[0].style.visibility = 'hidden';
+        scrollButton[0].style.visibility = 'hidden';
+    }
+});

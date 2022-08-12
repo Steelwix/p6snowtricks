@@ -28,6 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\UnicodeString;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class TricksController extends AbstractController
 {
@@ -35,17 +37,13 @@ class TricksController extends AbstractController
     public function homepage(TrickRepository $trickRepository): Response
     {
         return $this->render('tricks/homepage.html.twig', [
-            'title' => 'SNOWTRICKS', 'tricks' => $trickRepository->findBy(
+            'title' => 'Tous les tricks', 'tricks' => $trickRepository->findBy(
                 [],
                 ['trickName' => 'asc']
             )
         ]);
     }
-    #[Route('/test', name: 'app_test')]
-    public function Test()
-    {
-        return $this->render('tricks/test.html.twig');
-    }
+
     #[Route('trick/{slug}', name: 'app_trick')]
     public function show(
         Trick $trick,
@@ -60,6 +58,14 @@ class TricksController extends AbstractController
         $user = $this->getUser();
         $messages = $messageRepository->findBy(['idTrick' => $trick], ['date' => 'DESC']);
         $videos = $vr->findByIdTrick($trick);
+        $creationDate = $trick->getCreationDate();
+        $newDate = $creationDate->format('d-m-Y');
+        $modificationDate = $trick->getCreationDate();
+        if ($modificationDate != null) {
+            $realDate = $creationDate->format('d-m-Y');
+        }
+        $trickGroup = $trick->getTrickGroup();
+        $group = $trickGroup->getTrickGroupName();
         $form = $this->createForm(CommentaryFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
@@ -79,7 +85,7 @@ class TricksController extends AbstractController
             'tricks/tricks.html.twig',
             [
                 'comForm' => $form->createView(),
-                'trick' => $trick, 'messages' => $messages, 'videos' => $videos
+                'trick' => $trick, 'messages' => $messages, 'videos' => $videos, 'creationDate' => $newDate, 'modificationDate' => $realDate, 'group' => $group
 
             ]
 
@@ -199,7 +205,8 @@ class TricksController extends AbstractController
             $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
             $trickSlug = strtolower($trickNameNoSpace);
             $trick->setSlug($trickSlug);
-            $entityManager->persist($trick);
+            $date = new \DateTime('@' . strtotime('now'));
+            $trick->setModificationDate($date);
             $entityManager->flush();
             $this->addFlash('success', 'Trick modifié');
             return $this->redirectToRoute('app_home_');
