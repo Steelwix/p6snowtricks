@@ -86,7 +86,6 @@
     visibility: hidden;
 }
 
-.top-trick-image {}
 
 .top-trick-image h1 {
     position: absolute;
@@ -100,4 +99,24 @@
     font-size: 10vw;
     text-shadow: 10px 10px 20px rgb(0, 0, 0);
 
+}
+
+.login-page {
+    height: 100vh;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+
+.login-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
 }

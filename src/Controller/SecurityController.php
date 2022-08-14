@@ -85,11 +85,11 @@ class SecurityController extends AbstractController
                 $entityManagerInterface->persist($user);
                 $entityManagerInterface->flush();
                 $this->addFlash('success', 'Mot de passe réinitialisé');
-                return $this->redirectToRoute('app_login');
+                return $this->redirectToRoute('app_home_');
             }
             return $this->render('security/reset_password.html.twig', ['passForm' => $form->createView()]);
         }
         $this->addFlash('danger', 'Jeton de sécurité invalide');
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_home_');
     }
 }

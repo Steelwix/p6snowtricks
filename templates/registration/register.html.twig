@@ -4,27 +4,28 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				{% for flash_error in app.flashes('verify_email_error') %}
-					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-				{% endfor %}
 
-				<h1>Register</h1>
-				{{ form_start(registrationForm) }}
-				{{ form_row(registrationForm.username) }}
-				{{ form_row(registrationForm.email) }}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	<section class="login-page">
+		<div class="row">
+			<div class="col-12 text-center">
+				<br><br><h3>S'inscrire</h3>
+			</div>
+			<div class="card col-md-4 col-8 mx-auto text-center login-card"><br>
+				{{ form_start(registrationForm) }}<br>
+				{{ form_row(registrationForm.username) }}<br>
+				{{ form_row(registrationForm.email) }}<br>
 				{{ form_row(registrationForm.plainPassword, {
            		 label: 'Mot de passe'
-        		}) }}
-				{{ form_row(registrationForm.RGPDConsent) }}
+        		}) }}<br>
+				{{ form_row(registrationForm.RGPDConsent) }}<br>
 
-				<button type="submit" class="btn btn-primary btn-lg">S'inscrire</button>
-				{{ form_end(registrationForm) }}
-				<p>Déjà un compte?</p>
-				<a class="btn btn-lg btn-primary" href="{{ path('app_login') }}">Se connecter</a>
+				<button type="submit" class="btn btn-primary btn-lg">Créer le compte</button><br>
+				{{ form_end(registrationForm) }}<br>
+				<a class="d-lg-none" href="{{ path('app_login') }}">Déjà un compte?</a><br><br>
 			</div>
 		</div>
-	</div>
+	</section>
 {% endblock %}
