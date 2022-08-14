@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% block javascripts %}
+	<script src="{{asset('assets/js/loadMoreTricks.js')}}"></script>
+	<script src="{{asset('assets/js/scroll.js')}}"></script>
+{% endblock %}
 {% block body %}
 	<section id="top-section" class="top-section">
 		<a id="button"></a>
@@ -19,7 +22,7 @@
 			</div>
 
 			{% for trick in tricks %}
-				<div class="col-md-4">
+				<div class="col-md-4 trick-card">
 					<div class="card mh-500 d-flex align-items-stretch">
 
 						{% if trick.illustration.iDmedia.mediaName  is defined %}

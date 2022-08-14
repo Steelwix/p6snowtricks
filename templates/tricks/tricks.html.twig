@@ -1,24 +1,29 @@
 {% extends 'base.html.twig' %}
-
+{% block javascripts %}
+	<script src="{{asset('assets/js/loadMoreComs.js')}}"></script>
+{% endblock %}
 {% block body %}
 	{% if trick.illustration.iDmedia.mediaName is defined %}
 		<section class="top-trick-image" style="background:url('../../../uploads/trickmedia/{{trick.illustration.iDmedia.mediaName}}') center center / cover no-repeat; height: 100vh;">
 		{% else %}
 			<section id="top-section" class="top-section">
 			{% endif %}
+			{% if app.user.username is defined and app.user.isVerified == 1 %}
+				<div class="col-2 col-md-1 ms-auto">
+					<button type="button" class="btn btn-dark mt-3" href="{{ path('app_modify_trick',{slug: trick.slug}) }}">
+						<i class="bi bi-pen-fill"></i>
+
+					</button>
+					<button type="button" class="btn btn-dark mt-3" href="{{ path('app_remove_trick',{slug: trick.slug}) }}">
+						<i class="bi bi-trash-fill"></i>
+
+					</button>
+				</div>
+
+			{% endif %}
 			<div class="col-12 text-center">
 				<h1>{{trick.trickname}}</h1>
-				{% if app.user.username is defined and app.user.isVerified == 1 %}
-					<button type="button" class="btn btn-primary" href="{{ path('app_modify_trick',{slug: trick.slug}) }}">
-						<i class="bi bi-pen-fill"></i>
-						Editer</button>
-					<button type="button" class="btn btn-primary" href="{{ path('app_remove_trick',{slug: trick.slug}) }}">
-						<i class="bi bi-trash-fill"></i>
-						Supprimer
-					</button>
 
-
-				{% endif %}
 
 			</div>
 		</section>
