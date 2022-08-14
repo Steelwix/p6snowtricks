@@ -2,6 +2,8 @@
 
 namespace App\Form;;
 
+use App\Entity\TrickGroup;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,18 +32,17 @@ class ModifyTrickFormType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            //->add('categorie', ChoiceType::class, [
-            //'label' => 'Contenu',
-            //'attr' => [
-            //'placeholder' => '',
-            //'class' => 'form-control'
-            //]
-            // ])
+            ->add('trickGroup', EntityType::class, [
+                'class' => TrickGroup::class,
+                'choice_label' => 'trick_group_name',
+                'multiple' => false,
+                'expanded' => false
+            ])
             ->add(
                 'illustration',
                 FileType::class,
                 [
-                    'label' => 'Image d\'illustration',
+                    'label' => 'Image d\'illustration ',
                     'multiple' => false,
                     'mapped' => false,
                     'required' => false
@@ -51,7 +52,7 @@ class ModifyTrickFormType extends AbstractType
                 'media',
                 FileType::class,
                 [
-                    'label' => '',
+                    'label' => 'Photos ',
                     'multiple' => true,
                     'mapped' => false,
                     'required' => false
@@ -61,7 +62,7 @@ class ModifyTrickFormType extends AbstractType
                 'url',
                 TextType::class,
                 [
-                    'label' => 'url',
+                    'label' => 'Lien YouTube d\'une vidéo ',
                     'mapped' => false,
                     'required' => false
                 ]

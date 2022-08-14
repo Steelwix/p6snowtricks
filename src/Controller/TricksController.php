@@ -207,6 +207,8 @@ class TricksController extends AbstractController
             $trick->setSlug($trickSlug);
             $date = new \DateTime('@' . strtotime('now'));
             $trick->setModificationDate($date);
+            $trick->setTrickGroup($form->get('trickGroup')->getData());
+            $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Trick modifié');
             return $this->redirectToRoute('app_home_');

@@ -4,28 +4,44 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<h1>Modifier un trick</h1>
-				{% if trick.illustration.iDmedia.mediaName is defined %}
-					<img src="{{asset('/uploads/trickmedia/'~ trick.illustration.iDmedia.mediaName)}}" alt="Image" width="150">
-				{% endif %}
-				{{ form_start(ModifyTrickForm)}}
-				{{ form_row(ModifyTrickForm.trick_name, {'value': trick.trickname})}}
-				{{ form_row(ModifyTrickForm.description, {'value': trick.description})}}
-				{{ form_row(ModifyTrickForm.media)}}
-				{{ form_row(ModifyTrickForm.illustration)}}
-				{{ form_row(ModifyTrickForm.url)}}
-				<button type="submit" class="btn btn-primary btn-lg">Modifier</button>
+	{% if trick.illustration.iDmedia.mediaName is defined %}
+		<section class="top-trick-image" style="background:url('../../../uploads/trickmedia/{{trick.illustration.iDmedia.mediaName}}') center center / cover no-repeat; height: 100vh;">
+		{% else %}
+			<section id="top-section" class="top-section">
+			{% endif %}
+			<div class="col-12 text-center">
+				<h1>{{trick.trickname}}</h1>
+			</div>
+		</section>
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h1>Modifier
+						{{trick.trickname}}</h1>
+				</div>
+				<div class="card col-10 mx-auto text-center"><br>
+					{{ form_start(ModifyTrickForm)}}<br>
+					{{ form_row(ModifyTrickForm.trick_name, {'value': trick.trickname})}}<br>
+					{{ form_row(ModifyTrickForm.description, {'value': trick.description})}}<br>
+					{{ form_row(ModifyTrickForm.media)}}<br>
+					{{ form_row(ModifyTrickForm.trickGroup)}}<br>
+					{{ form_row(ModifyTrickForm.illustration)}}<br>
+					{{ form_row(ModifyTrickForm.url)}}<br>
+					<button type="submit" class="btn btn-primary btn-lg">Modifier</button><br><br>
+				</div>
 				{% if app.request.attributes.get('_route') == 'app_modify_trick' %}
-					<h2>Media du Trick</h2>
+					<div class="col-12 text-center">
+						<h2>Media du Trick</h2>
+					</div>
 					{% for media in trick.media %}
-						<div>
-							<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150">
-							<a href="{{path('app_remove_media', {id: media.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ media.id)}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a>
+						<div class="col-md-3 trick-card">
+							<div class="card mh-500 d-flex align-items-stretch">
+								<img class="card-img-top" src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"><br>
+								<a class="mx-auto" href="{{path('app_remove_media', {id: media.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ media.id)}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a><br>
+							</div>
 						</div>
 					{% endfor %}
+
 					{% for video in videos %}
 						<iframe width="420" height="315" src="{{video.link}}"></iframe>
 						<a href="{{path('app_remove_video', {id: video.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ video.id)}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a>
