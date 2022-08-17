@@ -125,3 +125,8 @@
 .trick-card {
     margin-bottom: 2vh;
 }
+
+textarea {
+    max-height: 600px;
+    height: 150px;
+}

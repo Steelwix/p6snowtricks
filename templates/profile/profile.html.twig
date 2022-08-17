@@ -1,44 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProfileController!
+{% block title %}Profil de
+	{{app.user.username}}
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
+	<section class="login-page">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h1>Profil</h1>
+			</div>
+			<div class="card col-10 mx-auto text-center login-card"><br>
 
-	<div class="example-wrapper">
-		<h1>Profile</h1>
+				<p>Nom d'utilisateur :
+					{{ app.user.username }}</p>
+				<p>
+					Email :
+					{{ app.user.email }}</p>
+				<p>Mot de passe :
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<a class="btn btn-danger" href="{{ path('app_reset_password') }}">Réinitialiser le mot de passe</a><br><br>
 
-		<ul>
-			<li>Nom d'utilisateur :
-				{{ app.user.username }}
-			</li>
-			<li>Email :
-				{{ app.user.email }}
-			</li>
-		</ul>
-		{{ form_start(accountForm)}}
-		{{ form_row(accountForm.profilePicture)}}
-		<button type="submit" class="btn btn-primary btn-lg">Envoyer</button>
-		{{ form_end(accountForm)}}
-		{% if app.user.profilePicture.name  is defined %}
-			<img src="{{asset('/uploads/profilepicture/'~ app.user.profilePicture.name)}}" alt="Image" width="150">
-			<a href="{{path('app_remove_pp')}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a>
-		{% else %}
-			<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
-			<p>Pas de photo de profil</p>
-		{% endif %}
 
-	</div>
+					{{ form_start(accountForm)}}
+					{{ form_row(accountForm.profilePicture)}}<br>
+					<button type="submit" class="btn btn-primary btn-lg">Envoyer</button><br><br>
+					{{ form_end(accountForm)}}
+					{% if app.user.profilePicture.name  is defined %}
+						<img class="img-fluid mx-auto" src="{{asset('/uploads/profilepicture/'~ app.user.profilePicture.name)}}" alt="Image" width="150">
+						<a href="{{path('app_remove_pp')}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a>
+					{% else %}
+						<img class="img-fluid mx-auto" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+						<p>Pas de photo de profil</p>
+					{% endif %}
+				</p>
+			</div>
+		</div>
+	</section>
 {% endblock %}

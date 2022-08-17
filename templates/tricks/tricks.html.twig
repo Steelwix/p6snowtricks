@@ -10,14 +10,14 @@
 			{% endif %}
 			{% if app.user.username is defined and app.user.isVerified == 1 %}
 				<div class="col-2 col-md-1 ms-auto">
-					<button type="button" class="btn btn-dark mt-3" href="{{ path('app_modify_trick',{slug: trick.slug}) }}">
+					<a type="button" class="btn btn-dark mt-3" href="{{ path('app_modify_trick',{slug: trick.slug}) }}">
 						<i class="bi bi-pen-fill"></i>
 
-					</button>
-					<button type="button" class="btn btn-dark mt-3" href="{{ path('app_remove_trick',{slug: trick.slug}) }}">
+					</a>
+					<a type="button" class="btn btn-dark mt-3" href="{{ path('app_remove_trick',{slug: trick.slug}) }}">
 						<i class="bi bi-trash-fill"></i>
 
-					</button>
+					</a>
 				</div>
 
 			{% endif %}
@@ -32,60 +32,65 @@
 
 				<div class="col-12 media-view">
 					<button class="btn btn-primary d-lg-none" href="">Voir les photos/videos</button>
-					{% for media in trick.media %}
-
-						<img src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"></img>
-
-
-				{% endfor %}
-
-				{% for video in videos %}
-
-					<iframe width="420" height="315" src="{{video.link}}"></iframe>
-				{% endfor %}
-			</div>
-			<div class="col-12">
-				<p>{{ trick.description }}</p>
-			</div>
-			<div class="col-12">
-				<p>Créé le
-					<strong>{{creationDate}}</strong>
-					et modifié le
-					<strong>{{modificationDate}}</strong>
-					La catégorie est
-					<strong>{{group}}</strong>
-				</p>
-			</div>
-			<divclass="col-12">
-				{% if app.user.username is defined and app.user.isVerified == 1 %}
-					<div class="col-12">
-						{{ form_start(comForm)}}
-						{{ form_row(comForm.comment)}}
-						<button type="submit" class="btn btn-primary btn-lg">Publier</button>
-						{{ form_end(comForm)}}
-					{% endif %}
 				</div>
+				{% for media in trick.media %}
+					<div class="col-md-3 trick-card">
+						<div class="card mh-500 d-flex align-items-stretch">
+							<img class="card-img-top" src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"></img>
 
-				<h5>Commentaires</h5>
-				{% for message in messages %}
-					<div class="col-md-4">
-						<p>
-							<small>
-								{% if message.author.profilePicture.name  is defined %}
-									<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
-								{% else %}
-									<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
-								{% endif %}
-								<strong>{{message.author.username}}</strong>
-								<i>{{message.date|date("d/m/Y H:i")}}</i>
-							</small>
-						</p>
-						<p>{{message.content}}</p>
 					</div>
-				{% endfor %}
+				</div>
+			{% endfor %}
 
-				<a href="" class="load-more">Load More</a>
+			{% for video in videos %}
+				<div class="col-md-3 trick-card">
+					<div class="card mh-500 d-flex align-items-stretch">
+						<iframe class="card-img-top" src="{{video.link}}"></iframe>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="col-12">
+			<p>{{ trick.description }}</p>
+		</div>
+		<div class="col-12">
+			<p>Créé le
+				<strong>{{creationDate}}</strong>
+				et modifié le
+				<strong>{{modificationDate}}</strong>
+				La catégorie est
+				<strong>{{group}}</strong>
 			</p>
 		</div>
+		<divclass="col-12">
+			{% if app.user.username is defined and app.user.isVerified == 1 %}
+				<div class="col-12">
+					{{ form_start(comForm)}}
+					{{ form_row(comForm.comment)}}
+					<button type="submit" class="btn btn-primary btn-lg">Publier</button>
+					{{ form_end(comForm)}}
+				{% endif %}
+			</div>
+
+			<h5>Commentaires</h5>
+			{% for message in messages %}
+				<div class="col-md-4">
+					<p>
+						<small>
+							{% if message.author.profilePicture.name  is defined %}
+								<img src="{{asset('/uploads/profilepicture/'~ message.author.profilePicture.name)}}" alt="Image" height="40" width="40">
+							{% else %}
+								<img class="img-fluid w-10" height="40" width="40" src="https://img.myloview.fr/stickers/user-icon-human-person-symbol-avatar-log-in-vector-sign-400-256564255.jpg" alt="Card image cap">
+							{% endif %}
+							<strong>{{message.author.username}}</strong>
+							<i>{{message.date|date("d/m/Y H:i")}}</i>
+						</small>
+					</p>
+					<p>{{message.content}}</p>
+				</div>
+			{% endfor %}
+
+			<a href="" class="load-more">Load More</a>
+		</p>
 	</div>
-</article>{% endblock %}
+</div></article>{% endblock %}

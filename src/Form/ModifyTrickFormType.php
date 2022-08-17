@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,18 +26,23 @@ class ModifyTrickFormType extends AbstractType
                 ]
             ])
 
-            ->add('description', TextType::class, [
+            ->add('description', TextareaType::class, [
                 'label' => 'Contenu',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'form-control'
-                ]
+                ],
+                'row_attr' => ['class' => 'trick-description-aera', 'rows' => "10"]
             ])
             ->add('trickGroup', EntityType::class, [
+                'label' => 'Catégorie',
                 'class' => TrickGroup::class,
                 'choice_label' => 'trick_group_name',
                 'multiple' => false,
-                'expanded' => false
+                'expanded' => false,
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add(
                 'illustration',
@@ -45,7 +51,10 @@ class ModifyTrickFormType extends AbstractType
                     'label' => 'Image d\'illustration ',
                     'multiple' => false,
                     'mapped' => false,
-                    'required' => false
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
                 ]
             )
             ->add(
@@ -55,7 +64,10 @@ class ModifyTrickFormType extends AbstractType
                     'label' => 'Photos ',
                     'multiple' => true,
                     'mapped' => false,
-                    'required' => false
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
                 ]
             )
             ->add(
@@ -64,7 +76,10 @@ class ModifyTrickFormType extends AbstractType
                 [
                     'label' => 'Lien YouTube d\'une vidéo ',
                     'mapped' => false,
-                    'required' => false
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
                 ]
             );
     }
