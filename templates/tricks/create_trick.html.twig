@@ -4,20 +4,22 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
+	<section class="login-page">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12 text-center">
 				<h1>Créer un trick</h1>
-				{{ form_start(createTrickForm)}}
-				{{ form_row(createTrickForm.trick_name)}}
-				{{ form_row(createTrickForm.description)}}
-				{{form_row(createTrickForm.trickGroup)}}
-				{{form_row(createTrickForm.illustration)}}
-				{{form_row(createTrickForm.media)}}
-				{{form_row(createTrickForm.url)}}
-				<button type="submit" class="btn btn-primary btn-lg">Créer</button>
+			</div>
+			<div class="card col-10 col-md-9 col-lg-6 mx-auto text-center"><br>
+				{{ form_start(createTrickForm)}}<br>
+				{{ form_row(createTrickForm.trick_name)}}<br>
+				{{ form_row(createTrickForm.description)}}<br>
+				{{form_row(createTrickForm.trickGroup)}}<br>
+				{{form_row(createTrickForm.illustration)}}<br>
+				{{form_row(createTrickForm.media)}}<br>
+				{{form_row(createTrickForm.url)}}<br>
+				<button type="submit" class="btn btn-primary btn-lg">Créer</button><br><br>
 				{{ form_end(createTrickForm)}}
 			</div>
 		</div>
-	</div>
+	</section>
 {% endblock %}

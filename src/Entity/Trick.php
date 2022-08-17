@@ -19,7 +19,7 @@ class Trick
     #[ORM\Column(type: 'string', length: 100)]
     private $trickName;
 
-    #[ORM\Column(type: 'string', length: 2000)]
+    #[ORM\Column(type: 'string', length: 5000)]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: TrickGroup::class, inversedBy: 'tricks')]

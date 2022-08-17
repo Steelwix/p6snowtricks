@@ -15,7 +15,6 @@ class AccountFormType extends AbstractType
             ->add('profilePicture', FileType::class, [
                 'label' => 'Ajouter une photo de profil',
                 'attr' => [
-                    'placeholder' => 'Votre commentaire...',
                     'multiple' => false,
                     'mapped' => false,
                     'required' => false,

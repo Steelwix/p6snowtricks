@@ -5,7 +5,10 @@
 {% endblock %}
 {% block body %}
 	<section id="top-section" class="top-section">
-		<a id="button"></a>
+		<a id="scroll-button" class="btn btn-dark position-fixed bottom-0 end-0 m-4 scroll-button" href="#toppage" role="button">
+			<i id="bi-arrow-up" class="bi bi-arrow-up"></i>
+		</a>
+		{% include "_partials/_flash.html.twig" %}
 		<div class="col-12 text-center">
 			<h1>SNOWTRICKS</h1>
 
@@ -52,13 +55,6 @@
 				<a href="" class="load-more">Load More</a>
 
 			</div>
-			<div class="col-12">
-				<a class="bot-arrow" href="#toppage"><img class="" src=" {{asset('/assets/icons/arrow-up.svg')}} " alt=" Image" width=" 50"></a>
-				<a id="scroll-button" class="btn btn-dark position-fixed bottom-0 end-0 m-4 scroll-button" href="#tricks" role="button">
-					<i id="bi-arrow-up" class="bi bi-arrow-up"></i>
-				</a>
-			</div>
 		</div>
-	</section>
-
-{% endblock %}
+	</div>
+</section>{% endblock %}
