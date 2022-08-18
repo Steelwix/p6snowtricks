@@ -13,7 +13,7 @@ class CommentaryFormType extends AbstractType
     {
         $builder
             ->add('comment', TextType::class, [
-                'label' => '',
+                'label' => 'Poster un commentaire',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'form-control'

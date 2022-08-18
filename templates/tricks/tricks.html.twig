@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
-	<script src="{{asset('assets/js/loadMoreComs.js')}}"></script>
-{% endblock %}
+
 {% block body %}
 	{% if trick.illustration.iDmedia.mediaName is defined %}
 		<section class="top-trick-image" style="background:url('../../../uploads/trickmedia/{{trick.illustration.iDmedia.mediaName}}') center center / cover no-repeat; height: 100vh;">
@@ -31,10 +29,10 @@
 			<div class="row">
 
 				<div class="col-12 media-view">
-					<button class="btn btn-primary d-lg-none" href="">Voir les photos/videos</button>
+					<button class="btn btn-primary show-media" href="">Voir les photos/videos</button>
 				</div>
 				{% for media in trick.media %}
-					<div class="col-md-3 trick-card">
+					<div class="col-md-3 trick-card trick-media-display">
 						<div class="card mh-500 d-flex align-items-stretch">
 							<img class="card-img-top" src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"></img>
 
@@ -43,7 +41,7 @@
 			{% endfor %}
 
 			{% for video in videos %}
-				<div class="col-md-3 trick-card">
+				<div class="col-md-3 trick-card trick-media-display">
 					<div class="card mh-500 d-flex align-items-stretch">
 						<iframe class="card-img-top" src="{{video.link}}"></iframe>
 					</div>
@@ -66,12 +64,12 @@
 			{% if app.user.username is defined and app.user.isVerified == 1 %}
 				<div class="col-12">
 					{{ form_start(comForm)}}
-					{{ form_row(comForm.comment)}}
-					<button type="submit" class="btn btn-primary btn-lg">Publier</button>
+					{{ form_row(comForm.comment)}}<br>
+					<button type="submit" class="btn btn-primary">Publier</button>
 					{{ form_end(comForm)}}
 				{% endif %}
 			</div>
-
+			<br>
 			<h5>Commentaires</h5>
 			{% for message in messages %}
 				<div class="col-md-4">
@@ -90,7 +88,7 @@
 				</div>
 			{% endfor %}
 
-			<a href="" class="load-more">Load More</a>
+			<a href="" class="btn btn-primary load-more">Load More</a>
 		</p>
 	</div>
-</div></article>{% endblock %}
+</div></article>{% endblock %}{% block javascripts %}<script src="{{asset('assets/js/loadMoreComs.js')}}"></script><script src="{{asset('assets/js/displayMediaButton.js')}}"></script><script src="{{asset('assets/js/showMedia.js')}}"></script>{% endblock %}

@@ -28,7 +28,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="{{asset('assets/js/bootstrap.bundle.min.js')}}" defer></script>
 
-		{% block javascripts %}{% endblock %}
+
 	</head>
 
 	<body>
@@ -47,4 +47,4 @@
 		{% block body %}{% endblock %}
 
 		{% include "_partials/_footer.html.twig" %}</body>
-</html></body></html>
+</html></body></html>{% block javascripts %}{% endblock %}
