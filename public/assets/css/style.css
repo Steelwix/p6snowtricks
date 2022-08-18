@@ -10,6 +10,14 @@
     display: none;
 }
 
+.col-xs-12 {
+    display: none;
+}
+
+.trick-media-display {
+    display: none;
+}
+
 .content {
     background-color: #333;
     height: 200px;
@@ -17,20 +25,6 @@
     border: 1px solid #ccc;
 }
 
-.load-more {
-    background-color: rgb(168, 168, 168);
-    color: #fff !important;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 20px;
-    margin: 50px 0;
-    display: inline-block;
-}
-
-.load-more:hover {
-    background-color: rgb(108, 176, 255);
-    text-decoration: none;
-}
 
 .top-section {
     background: url('../../../uploads/snowboard-g9ba239ead_1920.jpg') center center / cover no-repeat;
