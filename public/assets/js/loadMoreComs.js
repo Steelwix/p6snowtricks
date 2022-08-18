@@ -6,8 +6,5 @@ $(function () {
         if ($(".col-md-4:hidden").length == 0) {
             $(".load-more").css('visibility', 'hidden');
         }
-        $('html,body').animate({
-            scrollTop: $(this).offset().top
-        }, 1000);
     });
 });
