@@ -5,13 +5,12 @@ console.log(media);
 var w = window.innerWidth;
 console.log(w);
 
-function match() {
-    if (w < 766) {
-        media[0].style.visibility = 'visible';
-    }
-    else {
-        media[0].style.visibility = 'hidden';
-    }
+
+if (w < 766) {
+    media[0].style.visibility = 'visible';
+}
+else {
+    media[0].style.visibility = 'hidden';
 }
 
-match();
+

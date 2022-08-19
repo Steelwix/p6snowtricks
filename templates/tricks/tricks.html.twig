@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
-
+{% block javascripts %}
+	<script src="{{asset('assets/js/loadMoreComs.js')}}"></script>
+	<script src="{{asset('assets/js/displayMediaButton.js')}}"></script>
+	<script src="{{asset('assets/js/showMedia.js')}}"></script>
+{% endblock %}
 {% block body %}
 	{% if trick.illustration.iDmedia.mediaName is defined %}
 		<section class="top-trick-image" style="background:url('../../../uploads/trickmedia/{{trick.illustration.iDmedia.mediaName}}') center center / cover no-repeat; height: 100vh;">
@@ -91,4 +95,4 @@
 			<a href="" class="btn btn-primary load-more">Load More</a>
 		</p>
 	</div>
-</div></article>{% endblock %}{% block javascripts %}<script src="{{asset('assets/js/loadMoreComs.js')}}"></script><script src="{{asset('assets/js/displayMediaButton.js')}}"></script><script src="{{asset('assets/js/showMedia.js')}}"></script>{% endblock %}
+</div></article>{% endblock %}
