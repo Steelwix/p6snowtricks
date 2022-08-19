@@ -1,8 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
-	<script src="{{asset('assets/js/loadMoreTricks.js')}}"></script>
-	<script src="{{asset('assets/js/scroll.js')}}"></script>
-{% endblock %}
+{% block javascripts %}{% endblock %}
 {% block body %}
 	<section id="top-section" class="top-section">
 		<a id="scroll-button" class="btn btn-dark position-fixed bottom-0 end-0 m-4 scroll-button" href="#toppage" role="button">
@@ -57,4 +54,6 @@
 			</div>
 		</div>
 	</div>
-</section>{% endblock %}
+</section>
+<script src="{{asset('assets/js/loadMoreTricks.js')}}"></script>
+<script src="{{asset('assets/js/scroll.js')}}"></script>{% endblock %}
