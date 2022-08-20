@@ -21,10 +21,16 @@ window.onload = () => {
                     response => response.json()
 
                 ).then(data => {
-                    if (data.success)
+                    if (data.success) {
                         this.parentElement.remove()
-                    else
+                        if (data.redirect) {
+                            console.log(data.redirect);
+                            window.location.href = data.redirect;
+                        }
+                    }
+                    else {
                         alert(data.error)
+                    }
                 }).catch(e => alert(e))
             }
         })

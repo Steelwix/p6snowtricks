@@ -27,6 +27,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="{{asset('assets/js/bootstrap.bundle.min.js')}}" defer></script>
+		<script src="{{asset('assets/js/medias.js')}}" defer></script>
 
 
 	</head>
@@ -34,15 +35,6 @@
 	<body>
 		{% include "_partials/_nav.html.twig" %}
 
-		{% if app.user and app.user.isVerified == false %}
-			<div class="alert alert-warning alert-dismissible" role="alert">
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-				<div class="alert-message">
-					<strong>Votre compte n'est pas activé</strong>,
-					<a href="{{ path('app_resend') }}">renvoyer le lien d'activation</a>
-				</div>
-			</div>
-		{% endif %}
 
 		{% block body %}{% endblock %}
 

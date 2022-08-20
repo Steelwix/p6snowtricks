@@ -52,11 +52,11 @@ class CreateTrickFormType extends AbstractType
                 'illustration',
                 FileType::class,
                 [
-                    'label' => 'Ajouter une photo de profil',
+                    'label' => 'Ajouter une photo d\'illustration',
+                    'multiple' => false,
+                    'mapped' => false,
+                    'required' => false,
                     'attr' => [
-                        'multiple' => false,
-                        'mapped' => false,
-                        'required' => false,
                         'class' => 'form-control'
                     ]
                 ]

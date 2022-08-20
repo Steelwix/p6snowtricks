@@ -60,9 +60,11 @@ class TricksController extends AbstractController
         $videos = $vr->findByIdTrick($trick);
         $creationDate = $trick->getCreationDate();
         $newDate = $creationDate->format('d-m-Y');
-        $modificationDate = $trick->getCreationDate();
+        $modificationDate = $trick->getModificationDate();
         if ($modificationDate != null) {
             $realDate = $creationDate->format('d-m-Y');
+        } else {
+            $realDate = null;
         }
         $trickGroup = $trick->getTrickGroup();
         $group = $trickGroup->getTrickGroupName();
@@ -136,11 +138,15 @@ class TricksController extends AbstractController
             $video = new Video;
             $link = $form->get('url')->getData();
             if ($link !== null) {
+                $link = (new UnicodeString($link))
+                    ->replace('watch?v=', 'embed/');
                 $video->setLink($link);
                 $video->setIdTrick($trick);
                 $trick->addVideo($video);
                 $entityManager->persist($video);
             }
+            $date = new \DateTime('@' . strtotime('now'));
+            $trick->setCreationDate($date);
             $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Votre nouveau Trick a été publié');
@@ -211,7 +217,7 @@ class TricksController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Trick modifié');
-            return $this->redirectToRoute('app_home_');
+            return $this->redirectToRoute('app_trick', ['slug' => $trickSlug]);
         }
         return $this->render(
             'tricks/modify_trick.html.twig',
@@ -221,13 +227,33 @@ class TricksController extends AbstractController
         );
     }
 
-    #[Route('trick/remove/{slug}', name: 'app_remove_trick')]
-    public function deleteTrick(EntityManagerInterface $em, Trick $trick)
+    #[Route('trick/remove/{id}', name: 'app_remove_trick')]
+    public function deletetrick(Request $request, Trick $trick, EntityManagerInterface $em)
     {
-        $em->remove($trick);
-        $em->flush();
-        $this->addFlash('success', 'Trick supprimé');
-        return $this->redirectToRoute('app_home_');
+        $trickId = $trick->getId();
+        $medias = $trick->getMedia();
+        $url = $this->generateUrl('app_home_');
+
+        $data = json_decode($request->getContent(), true);
+        if ($this->isCsrfTokenValid('delete' . $trickId, $data['_token'])) {
+            foreach ($medias as $media) {
+                $mediaName = $media->getMediaName();
+                unlink($this->getParameter('media_directory') . '/' . $mediaName);
+                $em->remove($media);
+            }
+            $videos = $trick->getVideos();
+            foreach ($videos as $video) {
+                $em->remove($video);
+            }
+            $em->remove($trick);
+            $em->flush();
+            return new JsonResponse([
+                'success' => 1,
+                'redirect' => $url
+            ]);
+        } else {
+            return new JsonResponse(['error' => 'Token invalide'], 400);
+        }
     }
     #[Route('media/remove/media/{id}', name: 'app_remove_media', methods: "DELETE")]
     public function deleteMedia(Request $request, Media $media, EntityManagerInterface $em)
@@ -256,3 +282,12 @@ class TricksController extends AbstractController
         }
     }
 }
+
+//#[Route('trick/remove/{slug}', name: 'app_remove_trick')]
+//public function deleteTrick(EntityManagerInterface $em, Trick $trick)
+//{
+//    $em->remove($trick);
+//    $em->flush();
+ //   $this->addFlash('success', 'Trick supprimé');
+ //   return $this->redirectToRoute('app_home_');
+//}
