@@ -96,7 +96,7 @@ class TricksController extends AbstractController
     }
 
     #[Route('/create', name: 'app_create_trick')]
-    public function createTrick(TrickRepository $trick, Request $request, EntityManagerInterface $entityManager)
+    public function createTrick(TrickRepository $trickRepository, Request $request, EntityManagerInterface $entityManager)
     {
         $trick = new Trick;
         $user = $this->getUser();
@@ -132,9 +132,20 @@ class TricksController extends AbstractController
 
             $trick->setAuthor($user);
             $trickName = $form->get('trick_name')->getData();
-            $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
+            $allTricks = $trickRepository->findAll();
+            foreach ($allTricks as $allTrick) {
+                $allTrickName = $allTrick->getTrickName();
+                if ($trickName == $allTrickName) {
+                    $this->addFlash('danger', 'Ce nom de Trick est déjà pris');
+
+                    return $this->redirectToRoute('app_create_trick');
+                }
+            }
+            $trickNameNoSpace = $trickName ? new UnicodeString(str_replace(' ', '-', $trickName)) : null;
             $trickSlug = strtolower($trickNameNoSpace);
             $trick->setSlug($trickSlug);
+
+
             $video = new Video;
             $link = $form->get('url')->getData();
             if ($link !== null) {
@@ -151,7 +162,7 @@ class TricksController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Votre nouveau Trick a été publié');
 
-            return $this->redirectToRoute('app_trick', ['slug' => $trickSlug]);
+            return $this->redirectToRoute('app_home_', ['_fragment' => 'toppage']);
         }
 
         return $this->render(
@@ -208,7 +219,7 @@ class TricksController extends AbstractController
             $user  = $this->getUser();
             $trick->setAuthor($user);
             $trickName = $form->get('trick_name')->getData();
-            $trickNameNoSpace = $trickName ? new UnicodeString(str_replace('-', ' ', $trickName)) : null;
+            $trickNameNoSpace = $trickName ? new UnicodeString(str_replace(' ', '-', $trickName)) : null;
             $trickSlug = strtolower($trickNameNoSpace);
             $trick->setSlug($trickSlug);
             $date = new \DateTime('@' . strtotime('now'));
@@ -282,12 +293,3 @@ class TricksController extends AbstractController
         }
     }
 }
-
-//#[Route('trick/remove/{slug}', name: 'app_remove_trick')]
-//public function deleteTrick(EntityManagerInterface $em, Trick $trick)
-//{
-//    $em->remove($trick);
-//    $em->flush();
- //   $this->addFlash('success', 'Trick supprimé');
- //   return $this->redirectToRoute('app_home_');
-//}
