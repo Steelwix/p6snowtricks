@@ -37,17 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180)]
     private $email;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $image;
-
     #[ORM\Column(type: 'boolean')]
     private $is_verified = false;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $resetToken;
-
-    #[ORM\Column(type: 'blob', nullable: true)]
-    private $avatar;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: ProfilePicture::class, cascade: ['persist', 'remove'])]
     private $profilePicture;
@@ -202,18 +196,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function getIsVerified(): ?bool
     {
         return $this->is_verified;
@@ -234,18 +216,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
-
-        return $this;
-    }
-
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar($avatar): self
-    {
-        $this->avatar = $avatar;
 
         return $this;
     }
