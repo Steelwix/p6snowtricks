@@ -2,23 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\ProfilePicture;
+
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
-use App\Security\EmailVerifier;
 use App\Security\UserAuthentificatorAuthenticator;
 use App\Service\JWTService;
 use App\Service\SendMailService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Proxies\__CG__\App\Entity\User as EntityUser;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -28,7 +22,7 @@ class RegistrationController extends AbstractController
 {
 
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/register', name: 'app_register')] //register page
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -55,7 +49,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
+            //token for the mail validation
             $header = [
                 'typ' => 'JWT',
                 'alg' => 'HS256'
@@ -84,7 +78,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/{token}', name: 'app_verify_user')]
+    #[Route('/verify/{token}', name: 'app_verify_user')] //token verification to validate the user
     public function verifyUser($token, JWTService $jwt, UserRepository $userRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         if ($jwt->isValid($token) and !$jwt->isExpired($token) and $jwt->check($token, $this->getParameter('appjwtsecret'))) {
@@ -100,8 +94,8 @@ class RegistrationController extends AbstractController
         $this->addFlash('danger', 'Le token est invalide ou a expiré');
         return $this->redirectToRoute('app_login');
     }
-    #[Route('/resend', name: 'app_resend')]
-    public function resend(JWTService $jwt, SendMailService $mail, UserRepository $userRepository): Response
+    #[Route('/resend', name: 'app_resend')] //resend a token for the mail validation
+    public function resend(JWTService $jwt, SendMailService $mail): Response
     {
         $user = $this->getUser();
         if (!$user) {

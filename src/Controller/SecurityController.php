@@ -6,24 +6,19 @@ use App\Form\ResetPasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
 use App\Repository\UserRepository;
 use App\Service\SendMailService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
+    #[Route(path: '/login', name: 'app_login')] //login page
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
@@ -38,13 +33,13 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/logout', name: 'app_logout')] //logout action
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/reset-password', name: 'app_reset_password')]
+    #[Route(path: '/reset-password', name: 'app_reset_password')] //reset password action
     public function forgottenPassword(Request $request, UserRepository $userRepository, TokenGeneratorInterface $tokenGeneratorInterface, EntityManagerInterface $entityManagerInterface, SendMailService $mail): Response
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
@@ -52,7 +47,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() and $form->isValid()) {
             //looking for the user by his mail set in the form
             $user = $userRepository->findOneByEmail($form->get('email')->getData());
-            //Generate resetToken
+            //Generate resetToken linked with the identified user
             if ($user) {
                 $token = $tokenGeneratorInterface->generateToken();
                 $user->setResetToken($token);
@@ -71,7 +66,7 @@ class SecurityController extends AbstractController
         }
         return $this->render('security/reset_password_request.html.twig', ['requestPassForm' => $form->createView()]);
     }
-    #[Route(path: '/forgotten-password/{token}', name: 'app_forgotten_password')]
+    #[Route(path: '/forgotten-password/{token}', name: 'app_forgotten_password')] //enter a new password
     public function resetPassword(string $token, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $userRepository->findOneByResetToken($token);
@@ -80,7 +75,7 @@ class SecurityController extends AbstractController
             $form = $this->createForm(ResetPasswordFormType::class);
             $form->handleRequest($request);
             if ($form->isSubmitted() and $form->isValid()) {
-                $user->setResetToken('');
+                $user->setResetToken(''); //delete the linked token
                 $user->setPassword($passwordHasher->hashPassword($user, $form->get('password')->getData()));
                 $entityManagerInterface->persist($user);
                 $entityManagerInterface->flush();

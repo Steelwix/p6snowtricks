@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\ProfilePicture;
-use App\Entity\User;
 use App\Form\AccountFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,14 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
-    #[Route('/profile', name: 'app_profile')]
+    #[Route('/profile', name: 'app_profile')] //Profile view
     public function editProfile(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(AccountFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
-
+            //add profile picture if there is none
             $profilePicture = $form->get('profilePicture')->getData();
             if ($user->getProfilePicture() == null) {
 
@@ -44,7 +43,7 @@ class ProfileController extends AbstractController
             'accountForm' => $form->createView(),
         ]);
     }
-    #[Route('/profile/removepp', name: 'app_remove_pp')]
+    #[Route('/profile/removepp', name: 'app_remove_pp')] //delete the profile picture
     public function deletePp(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
