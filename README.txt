@@ -2,7 +2,7 @@
 
 2 - Import the project from Github with the "pull" command
 
-3 - Recover the SQL file
+3 - Recover the snowtricks.SQL file
 
 4 - Import the SQL file into your database system (wampserver for example, or any other system you use)
 
