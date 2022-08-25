@@ -39,7 +39,7 @@
 						<div class="col-md-3 trick-card">
 							<div class="card mh-500 d-flex align-items-stretch">
 								<img class="card-img-top" src="{{asset('/uploads/trickmedia/'~ media.mediaName)}}" alt="Image" width="150"><br>
-								<a class="mx-auto" href="{{path('app_remove_media', {id: media.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ media.id)}}">><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a><br>
+								<a class="mx-auto" href="{{path('app_remove_media', {id: media.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ media.id)}}"><img src="{{asset('/assets/icons/trash.svg')}}" alt="Image" width="20"></a><br>
 							</div>
 						</div>
 					{% endfor %}
