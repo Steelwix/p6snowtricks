@@ -169,10 +169,11 @@ class TricksController extends AbstractController
     }
 
     #[Route('trick/modify/{slug}', name: 'app_modify_trick')] //modify a trick
-    public function modifyTrick(Trick $trick, VideoRepository $vr, Request $request, EntityManagerInterface $entityManager)
+    public function modifyTrick(Trick $trick, TrickRepository $trickRepository, VideoRepository $vr, Request $request, EntityManagerInterface $entityManager)
     {
         //get all videos
         $videos = $vr->findByIdTrick($trick);
+        $slug = $trick->getSlug();
         $form = $this->createForm(ModifyTrickFormType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
@@ -187,7 +188,7 @@ class TricksController extends AbstractController
                 $trick->addMedium($newMedia);
             }
             //check if there is any illustration image
-            if ($trick->getIllustration() == null) {
+            if ($trick->getIllustration() != null) {
                 $illustration = $form->get('illustration')->getData();
                 //if there is no illustration, it accepts the new one
                 $illustrationName = md5(uniqid()) . '.' . $illustration->guessExtension();
@@ -215,11 +216,23 @@ class TricksController extends AbstractController
             //Get the user to be the new author
             $user  = $this->getUser();
             $trick->setAuthor($user);
-            //get trick name to use it as a slug with no space and lower case text
+            //check if the trick name is already used
             $trickName = $form->get('trick_name')->getData();
+            $allTricks = $trickRepository->findAll();
+            foreach ($allTricks as $allTrick) {
+                $allTrickName = $allTrick->getTrickName();
+                $allTrickSlug = $allTrick->getSlug();
+                if ($trickName == $allTrickName and $slug != $allTrickSlug) {
+                    $this->addFlash('danger', 'Ce nom de Trick est déjà pris');
+
+                    return $this->redirectToRoute('app_modify_trick', ['slug' => $slug]);
+                }
+            }
+            //set slug using the Trick Name variable
             $trickNameNoSpace = $trickName ? new UnicodeString(str_replace(' ', '-', $trickName)) : null;
             $trickSlug = strtolower($trickNameNoSpace);
             $trick->setSlug($trickSlug);
+
             //Set the modification date
             $date = new \DateTime('@' . strtotime('now'));
             $trick->setModificationDate($date);
